@@ -1,0 +1,37 @@
+<html>
+<head>
+<style type="text/css">
+    div#scramble_icons > * {
+        cursor: pointer;
+        margin: 10px;
+    }
+</style>
+<script>
+    window.TNOODLE_ENV = { "TNOODLE_333_MIN_DISTANCE": "1" };
+</script>
+<script src="tnoodle.js"></script>
+<script>
+    function puzzlesLoaded(puzzles) {
+        window.puzzles = puzzles;
+        window.addEventListener("load", function() {
+            var versionSpan = document.getElementById("version");
+            versionSpan.appendChild(document.createTextNode(tnoodlejs.getVersion()));
+            tnoodlejs.setLogLevel("FINEST");
+        });
+    }
+
+    function newScramble(puzzle) {
+        var scram = puzzle.generateScramble();
+        var maxWidth = 0;
+        var maxHeight = 0;
+        var svgText = tnoodlejs.scrambleToSvg(scram, puzzle, maxWidth, maxHeight);
+
+        return {scram:scram,svgtext:svgText};
+    }
+	//newScramble(puzzles["222"]);
+</script>
+</head>
+<body>
+<h1>tnoodlejs <span id="version"></span></h1>
+</body>
+</html>

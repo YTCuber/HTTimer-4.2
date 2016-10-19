@@ -1,0 +1,159 @@
+body {
+	font-family:courier;
+	font-size:18pt;
+	color:white;
+	max-height:100%;
+	height:100%;
+	overflow:hidden;
+}
+
+#mobile-bottom {
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	height:10%;
+	background-color:black;
+	color:#C3C3C3;
+	font-size:17pt;
+}
+
+#mobile-bottom-left {
+	float:left;
+	width:20%;
+}
+
+#mobile-bottom-right {
+	float:right;
+	width:20%;
+}
+
+#mobile-bottom-middle {
+	width:60%;
+}
+
+.bottom-button {
+	margin:auto;
+	text-align:center;
+}
+
+.bottom-button:hover {
+	background-color:#EEEEEE;
+}
+
+.slider {
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:10%;
+	top:0;
+	background-color:#222277;
+	max-height:90%;
+	overflow:scroll;
+}
+
+#timer-start {
+	width:100%;
+	height:60%;
+	background-color:#222277;
+}
+
+#timer-display {
+	font-size:50pt;
+	text-align:center;
+}
+
+#scramble {
+	width:100%;
+	height:30%;
+	background-color:#99CC29;
+}
+
+button.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 13px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px !important;
+    transition: 0.2s;
+}
+
+button.accordion.active, button.accordion:hover {
+    background-color: #ddd;
+}
+
+button.accordion2 {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 13px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px !important;
+    transition: 0.2s;
+}
+
+button.accordion2.active, button.accordion2:hover {
+    background-color: #ddd;
+}
+
+button.accordion:after {
+    content: '\02795';
+    font-size: 11px !important;
+    color: #777;
+    float: right;
+    margin-left: 5px !important;
+}
+
+button.accordion.active:after {
+    content: "\2796";
+}
+
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s ease-in-out;
+    opacity: 0;
+}
+
+div.panel.show {
+    opacity: 1;
+    max-height: 5000px;
+}
+
+a,a:hover,a:link,a:active {
+	color:black !important;
+	text-decoration:underline;
+}
+
+button {
+	border:1px solid black;
+	background-color:#222277;
+	color:#99CC29;
+}
+
+.time_liste {
+	background-color:#99CC29;
+}
+
+.menu-left {
+	width:100%;
+}
+
+.optionBottomContainer {
+	width:100%;
+	background-color:#99CC29;
+}
+
+div.scrambler-div {
+	color:black;
+	background-color:#99CC29;
+}

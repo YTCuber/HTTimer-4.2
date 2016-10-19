@@ -1,0 +1,425 @@
+<div class="options" id="takeabreak"  style="visibility:hidden;"></div>
+<div class="options" style="visibility:hidden;" id="options">
+	<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive(0);">Design</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(5);">Scrambler</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(1);">Language</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(2);">Start/Stop</button>
+		<!--<button class="accordion2" onclick="javascript:toggleMenuActive(3);">Tools</button>-->
+		<button class="accordion2" onclick="javascript:toggleMenuActive(7);">Hide/Show</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(4);">Miscellaneous</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(8);hide('options');">back</button>
+	</div>
+	<br/>
+	<div class="optionBottomContainer" id="select1" style="visibility:hidden;">
+		Current language is english.<br/>
+		<div class="alert alert-danger alert-dismissable" role="alert">To switch language, the page will reload. You need to save the times before, if you want to keep them. I am not responsible for data loss or computer crashes.</div>
+		<div class="btn btn-default">Switch to german</div>
+		<div class="btn btn-default">Switch to english (current)</div>
+		<div class="btn btn-default">Switch to ?</div>
+		<div class="btn btn-default">Switch to ?</div>
+		<div class="btn btn-default">Switch to ?</div>
+	</div>
+	<div class="optionBottomContainer" id="select2" style="visibility:hidden;">
+		<h3>Start/Stop</h3>
+		<span id="timingmode"></span>
+
+		<button class="btn-option" onclick="javascript:timer.timingMode=1;">Space</button>
+			<a class="helpmsg" title="Start and stop the timer by pressing space. Default-Option."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.timingMode=2">Control, Control</button>
+			<a class="helpmsg" title="Start and stop the timer by pressing one ctrl.-Key."></a><br/>
+		<hr/>
+		<button class="btn-option" onclick="javascript:timer.timingMode=0">Space, V, B, N (not recommended)</button>
+			<a class="helpmsg" title="Start and stop the timer by pressing space or V or B or N. This is old and may be removed in a future version."></a><br/>
+	</div>
+	<div class="optionBottomContainer" id="select3" style="visibility:hidden;">
+		<h3>Tools</h3>
+		<button class="btn-option" onclick="javascript:timer.tool=0;drawTool()">Zeiten-ubersicht</button>
+			<a class="helpmsg" title="Gibt einen uberblick uber die aktuellen Bestzeiten."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=1;drawTool()">Zeitenverteilung</button>
+			<a class="helpmsg" title="Funktioniert noch nicht."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=2;drawTool()">Draw Scrambles</button>
+			<a class="helpmsg" title="Funktioniert noch nicht."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=3;drawTool()">Zeitenverh&auml;ltnis</button>
+			<a class="helpmsg" title="Gibt das Verh&auml;ltnis zwischen Bestzeit und Averages an."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=4;drawTool()">Zeitenubersicht</button>
+			<a class="helpmsg" title="Zeichnet jede Zeit als Balken."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=5;drawTool()">Zeitenvergleich</button>
+			<a class="helpmsg" title="Funktioniert noch nicht ganz."></a><br/>
+	</div>
+	<div class="optionBottomContainer" id="select4" style="visibility:hidden;overflow:scroll;max-height:99%;">
+		<h3>Relays</h3>
+		<button onclick="javascript:show('relays');displayRelayOption();">Select puzzles</button><br/>
+		<button class="btn-option" onclick="javascript:timer.relayWarn=true;">Warn</button>
+			<a class="helpmsg" title="When selecting too many relay puzzles the timer will warn you and block."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.relayWarn=false;">Do not warn</button>
+			<a class="helpmsg" title="When selecting too many relay puzzles the timer will not warn you, but block."></a><br/>
+		<h3>Precision</h3>
+		<button class="btn-option" onclick="javascript:timer.precision=true">Precise</button>
+			<a class="helpmsg" title="The timer displays the full saved accuracity down to 1ms."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.precision=false">Unprecise</button>
+			<a class="helpmsg" title="The timer displays in 10ms-Steps, internally the times get saved to max accuracity, so when changing this option later the precision will not remain unprecise."></a><br/>
+		<h3>ExportDesign</h3>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=0;">Id.: Time Scramble</button>
+			<a class="helpmsg" title="Beim Exportieren wird dieses Format verwendet."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=1;">Time, Time</button>
+			<a class="helpmsg" title="Beim Exportieren wird dieses Format verwendet."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=2;">Time Time</button>
+			<a class="helpmsg" title="Beim Exportieren wird dieses Format verwendet."></a><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=3;">Id.: Time</button>
+			<a class="helpmsg" title="Beim Exportieren wird dieses Format verwendet."></a><br/>
+		<h3>While Timing</h3>
+		<button class="btn-option" onclick="javascript:timer.displayTimeWhenSolving=false;">display "solving"</button><br/>
+		<button class="btn-option" onclick="javascript:timer.displayTimeWhenSolving=true;">display current Time</button>
+		<h3>Custom Avg</h3>
+		Current: <div id="customavganzahl">3</div><br/>
+		<button class="btn-option" onclick="timer.customAvg++;updateOptionsCustomAvg();">+1</button><br/>
+		<button class="btn-option" onclick="timer.customAvg--;updateOptionsCustomAvg();">-1</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=10;updateOptionsCustomAvg();">+10</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=10;updateOptionsCustomAvg();">-10</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=100;updateOptionsCustomAvg();">+100</button><br/>
+		<button class="btn-option" onclick="timer.customAvg-=100;updateOptionsCustomAvg();">-100</button><br/>
+	</div>
+	<div class="optionBottomContainer" id="select5" style="visibility:hidden;max-height:99%;overflow:scroll;">
+		Nothing here!
+		<script> 
+		function randombgcolor(value){
+			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
+			$('#movable > div').css("background-color",value);
+		}
+		function randomcolor(value){
+			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
+			$('body').css("background-color",value);
+		}
+		function randomftcolor(value){
+			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
+			$('body,#movable > div').css("color",value);
+		}
+		function updateOptionsCustomAvg(){
+			document.getElementById("customavganzahl").innerHTML=timer.customAvg;
+		}
+		function toggleMenuActive(id){
+			hide("select"+currentMenuActive);
+			currentMenuActive=id;
+			show("select"+currentMenuActive);
+		}
+		function toggleMenuActive2(id){
+			hide("musik"+currentMenuActive2);
+			currentMenuActive2=id;
+			show("musik"+currentMenuActive2);
+		}
+		function toggleMenuActive3(id){
+			hide("hilfe"+currentMenuActive3);
+			currentMenuActive3=id;
+			show("hilfe"+currentMenuActive3);
+		}
+		//updateOptionsCustomAvg();
+		var currentMenuActive=currentMenuActive2=currentMenuActive3=0;
+		/*var text;text="";
+		for(let i=0;i<timer.scrambleTypes.length;++i){
+			text+='<button class="btn-option" onclick="javascript:switchScrambler(\''+timer.scrambleTypes[i]+'\');">'+timer.scrambleNames[i]+'</button><a class="helpmsg" onmouseover="$(this).html(\'Sets the scrambler to '+timer.scrambleNames[i]+'.\" onmouseout="$(this).html(\'&nbsp;?&nbsp;\"></a><br/>';
+		}document.write(text);*/
+		</script>
+	</div>
+	<div class="optionBottomContainer" id="select0" style="visibility:hidden;">
+		<h3>Select Theme</h3>
+		<button class="btn-option" onclick="javascript:randombgcolor('#222277');randomcolor('#99CC29');randomftcolor('#000000');">Old Design</button><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#000000');randomftcolor('#808080');">Dark</button><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#efef10');randomftcolor('#242424');">Yellow</button><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#ffb822');randomftcolor('#234323');">Orange</button><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#00dd00');randomftcolor('#202020');">Green</button><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#f7f7f7');randomftcolor('#5C5C5C');">Reset</button><br/>
+		<h3>Change individual colors</h3>
+		<button class="btn-option" onclick="javascript:randomcolor();">Change main color</button>
+			<a class="helpmsg" title="Changes the main color to a random hex value."></a><br/>
+		<button class="btn-option" onclick="javascript:randomcolor('#f7f7f7');">Reset main color</button>
+			<a class="helpmsg" title="Resets the main color to the start value."></a><br/>
+		<button class="btn-option" onclick="javascript:randomcolor('#'+prompt('HEX Value'));">Set main color to HEX value</button>
+			<a class="helpmsg" title="Resets the main color to a prompted HEX value."></a><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor();">Change background color</button>
+			<a class="helpmsg" title="Changes the background color to a random hex value."></a><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#FFFFFF');">Reset background color</button>
+			<a class="helpmsg" title="Resets the background color to the start value."></a><br/>
+		<button class="btn-option" onclick="javascript:randombgcolor('#'+prompt('HEX Value'));">Set background color to HEX value</button>
+			<a class="helpmsg" title="Resets the background color to a prompted HEX value."></a><br/>
+		<button class="btn-option" onclick="javascript:randomftcolor();">Change font color</button>
+			<a class="helpmsg" title="Changes the font color to a random hex value."></a><br/>
+		<button class="btn-option" onclick="javascript:randomftcolor('#5C5C5C');">Reset font color</button>
+			<a class="helpmsg" title="Resets the font color to the start value."></a><br/>
+		<button class="btn-option" onclick="javascript:randomftcolor('#'+prompt('HEX Value'));">Set font color to HEX value</button>
+			<a class="helpmsg" title="Resets the font color to a prompted HEX value."></a><br/>
+		<h3>Change Font</h3>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','lngs725');">default</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','arial');">Arial</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','verdana');">Verdana</button>
+			<a class="helpmsg" title="Changes the font."></a>
+		<br/>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','georgia');">Georgia</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Palatino Linotype');">Palatino Linotype</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Book Antiqua');">Book Antiqua</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Palatino');">Palatino</button>
+			<a class="helpmsg" title="Changes the font."></a>
+		<br/>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','courier');">Courier</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','lucida console');">Lucida Console</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','monaco');">Monaco</button>
+			<a class="helpmsg" title="Changes the font."></a>
+	</div>
+	<div class="optionBottomContainer" id="select7" style="visibility:hidden;">
+		<button class="btn-option" onclick="javascript:timer.displayGoalUnderTime=true;document.getElementByClass('goal-time').style.visibility='visible';">Display current Goals under Time display</button><br/>
+		<button class="btn-option" onclick="javascript:timer.displayGoalUnderTime=false;document.getElementByClass('goal-time').style.visibility='hidden';">Do not display current Goals under Time display</button><br/>
+	</div>
+	<div id="select8"></div>
+</div>
+<div class="options" style="visibility:hidden" id="musik">
+	<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(0);">Link to Music (mp3, wav, ogg)</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(1);">YouTube Video</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(2);">YouTube PlayList</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(4);">Help</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(8);hide('musik');">back</button>
+	</div>
+	<div class="optionBottomContainer" id="musik0" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.server.load();">Load Music</button>
+	</div>
+	<div class="optionBottomContainer" id="musik1" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.youtube.load();">Load Music</button>
+		<div id="youtubeonevideoload"></div>
+	</div>
+	<div class="optionBottomContainer" id="musik2" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.youtube.loadlist();">Load Music</button>
+	</div>
+	<div class="optionBottomContainer" id="musik4" style="visibility:hidden;">
+		The Music class allows you to listen to music while solving to give you a time boost.<br/>
+		The YouTube-ID is the part of the URL after the last "?v=". <small>https://www.youtube.com/watch?v=</small><b>Jyrpx9rEGMI</b>
+	</div>
+	<div id="musik8"></div>
+</div>
+
+<div id="hilfe" class="options" style="visibility:hidden;">
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+		<li><a data-toggle="tab" href="#menu1">Measuring times</a></li>
+		<li><a data-toggle="tab" href="#menu2">Scrambler</a></li>
+		<li><a data-toggle="tab" href="#menu3">Tools</a></li>
+		<li><a data-toggle="tab" href="#menu4">AlgSets</a></li>
+		<li><a data-toggle="tab" href="#menu5">Goals</a></li>
+		<li><a data-toggle="tab" href="#menu6">Options</a></li>
+		<li><a data-toggle="tab" href="#menu7">FAQ</a></li>
+		<li><a data-toggle="tab" href="#menu8">Tested Browsers</a></li>
+		<li><a data-toggle="tab" href="#menu9">TODO-List</a></li>
+		<li><a data-toggle="tab" href="#menu0">Working with me</a></li>
+		<li><a onclick="hide('hilfe');">Close Help</a></li>
+	</ul>
+
+	<div class="tab-content">
+	  <div id="home" class="tab-pane fade in active">
+		<h3>Help</h3>
+		<p>Welcome to the help. Select from the tabs what you want to know about.</p>
+	  </div>
+	<div id="menu1" class="tab-pane fade">
+		<h2>Measuring times</h2>
+		The timer measures the time between two hits on a speficic key, per default the spacebar, settable in the options. The current time is displayed in the middle.<br/>
+		All past times get displayed on the left. The buttons next to each time modify the saved data for it. "X" deletes the time, "+2" sets a 2 second penalty, "+4" sets a 4 second penalty, "DNF" DNFs the solve.
+	  </div>
+	<div id="menu2" class="tab-pane fade">
+		<h2>Scrambler</h2>
+		The Scrambler, displayer at the top-moddle, outputs a sequence of moves for the currently selected puzzle, which may be applied on the solved cube before timing the solving progress. You can select the puzzle and its differend scramble types at the left.<br/>
+		Scramblers for Shapemods are not the same as the scramblers for the original, unmodded base puzzle. They take the rotation of centers, equalizeness of the pieces and missing orientation or permutation into account.
+	  </div>
+	<div id="menu3" class="tab-pane fade">
+		<h2>Tools</h2>
+		There are differend Tools to select. Always one is selected at the top right, you can select which one in the options.
+	  </div>
+	<div id="menu4" class="tab-pane fade">
+		<h2>AlgSets</h2>
+		The AlgSets-Function makes it possible to save algorithms in groups ordered by affect on the pieces of the cube. I gets called by the button "AlgSets" in the Main Menu. Some AlgSets are predefined, currently just PLL; you can overwrite it if you want.<br/>
+		It is also possible to rotate over all axises, inversion and creating an animation of how the moves affect a solved 3x3.
+	 </div>
+	<div id="menu5" class="tab-pane fade">
+		<h2>Goals</h2>
+		It is possible to set individual goals for single, ao5, ao12, ao50 and one user-defined average for each session. When successfully archieving the goal, the color changes to green, else it stays red.
+	  </div>
+	<div id="menu6" class="tab-pane fade">
+		<h2>Options</h2>
+		TODO
+	  </div>
+	<div id="menu7" class="tab-pane fade">
+		<h2>FAQ</h2>
+		TODO
+	  </div>
+	<div id="menu8" class="tab-pane fade">
+		<h3>Successfully Tested Browsers and Versions:</h3>
+		<ul class="list-group">
+			<li class="list-group-item">Chrome  49.0.2623.112, Windows 10</li>
+			<li class="list-group-item">Chrome  51.0.2704.79 , Debian Testing</li>
+			<li class="list-group-item">Opera   37           , OS X 10.8</li>
+			<li class="list-group-item">Firefox 44.0         , Windows 7 Build 7601</li>
+			<li class="list-group-item">Firefox 44.0         , Debian Testing</li>
+			<li class="list-group-item">Firefox 45.0         , Debian Testing</li>
+			<li class="list-group-item">Firefox 45.0         , OS X 10.8</li>
+			<li class="list-group-item">Firefox 45.0.2       , Windows 10</li>
+			<li class="list-group-item">Firefox 45.0.2       , Debian</li>
+			<li class="list-group-item">Firefox 46.0         , Debian Testing</li>
+			<li class="list-group-item">Firefox 46.0         , OS X 10.8</li>
+			<li class="list-group-item">Firefox 47.0         , Windows 10</li>
+			<li class="list-group-item">Firefox 48.0         , Ubuntu 16.04 LTS</li>
+			<li class="list-group-item">Firefox 48.0.1       , Ubuntu 16.04 LTS</li>
+			<li class="list-group-item">Firefox 49.0         , Ubuntu 16.04 LTS</li>
+		</ul>
+		<h3>Not working Browsers:</h3>
+		<ul class="list-group">
+			<li class="list-group-item">Internet Explorer 1-5, Windows (needs more details)</li>
+		</ul>
+	  </div>
+	<div id="menu9" class="tab-pane fade">
+			<h3>TODO-List</h3>
+		<pre>
+Quit cubing.
+Add translations
+	German
+	?
+	?
+	?
+Add tools:
+	Top 10 Graph
+	DNF% Graph
+	How often you solved when Graph
+	Best Single Text
+	Best Ao5 Text
+	Best Ao12 Text
+	Last Scramble Text
+	Current Goals %
+	Best Goals %
+	Inspection Time
+	Inspection warn
+	Draw Scramble Graphic
+	% of Current WR/CR Graph
+Add SolveAdd:
+	Comment
+	Reconstruction
+	Method
+	Fewest Moves solution
+Add Layout
+	Font size change option
+Add Documentation
+	Including KeyCodes
+Add Options
+	Auto-Save
+	Language select
+	Use small font after decimal point
+Add Export
+	Only Add button
+Add Scramblers
+	3x3 for Noobs
+	CLL
+	ELL
+	Edges-only
+	Corners-only
+	2x2x2 EG
+	LSLL
+	Custom
+		Input allowed outputs
+			May be imported from algset, selecting individual algs or the whole Set
+Add Import
+	CSTimer
+	Raw Time List (QQTimer)
+
+Redo AlgSets
+	*
+Redo Goals
+	Interface
+</pre>
+	  </div>
+	<div id="menu0" class="tab-pane fade">
+		<h2>Working with me</h2>
+		<!--I used alg.cubing.net for displaying the animated algorithms in AlgSets.<br/>
+		Thanks to bgrgndz from speedsolving.com for designing and testing the design from Version 3.<br/>
+		YouTube-Music connects to YouTube and displays videos from YouTube.<br/>
+		The Icons are from <a href="https://cubing.github.io/icons/">here</a>.<br/>
+		Jquery and Bootstrap are used.-->
+		JQuery, Bootstrap, Mousetrap, <a href="https://cubing.github.io/icons/">Cubing Icons</a><br/>
+		Loading music from YouTube connects to <a href="http://youtube.com">YouTube</a>.<br/>
+	  </div>
+	</div>
+</div>
+<div id="new" class="options" style="visibility:visible;">
+	<h2>New in HTTimer 4.2.0 Alpha</h2>
+	<pre>
+	- Layout Edit
+		- Users can edit the layout using Menu->Layout->Edit, drag elements around, add new ones using the add thing on the bottom right, and delete them by doubleclicking.
+		- Advanced edit is possible with Editing HTML, Menu->Layout->Edit Code
+		- Change Layout from HTTimer to QQTimer
+	- Top Navigation bar
+	- Keycodes
+		- Space to start/stop timer
+		- Crtl+S to Export
+		- a d m i n to reload (lol)
+		- I to start inspection
+	- Redesigned Help
+		- Tabs
+		- Added content in TODO-List
+	- Redesigned Scrambler select
+		- Tabs
+		- Divided into WCA and non-WCA scramblers
+	- Added Graphs
+		- Time distribution for Single
+	- Added Tools
+		- Metronome
+	- Added scramblers
+		- Custom moves and number of moves
+		- Gear cube
+		- CFOP LL
+		- ZBLL
+		- CMLL
+		- 2GLL
+		- ZZLS
+		- PLL
+		- Simplified and improved Dreidel LimCube scramble
+		- Improved Jumbling Curvy Copter Plus scramble
+	-Added SolveAdd:
+		- Flags
+			Pop
+			BLD Memo Mistake
+			BLD Execution Mistake
+			PB
+			UWR
+			Fake
+			Fail
+			PLL Skip
+			OLL Skip
+			LL Skip
+			CMLL Skip
+			EO Skip
+			EOLL Skip
+			EPLL Skip
+			COLL Skip
+			CPLL Skip
+			EOCPLL Skip
+			COEPLL Skip
+			EOLine Skip
+			Corner twist
+			Explosion
+			Parity
+			Double Parity
+			Mess up
+			Parity mess up
+			Double mess up
+			Double Parity mess up
+	- Removed Options
+		- Max Scrambler height
+		- Select scrambler
+	- Sonstiges
+		- Generate Export
+		- Clean up
+		- Changed Version number to 4.2.x.y Alpha
+	</pre>
+	<div onclick="hide('new');" class="btn btn-default">HIDE</div>
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga')
+;ga('create','UA-84833886-1','auto');ga('send','pageview');</script>

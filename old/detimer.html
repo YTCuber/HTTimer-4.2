@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+<head>
+<title>HTtimer 3.0.0</title>
+<link rel="stylesheet" type="text/css" href="timercss.css" media="all"   />
+<link rel="stylesheet" type="text/css" href="cubing-icons.css" media="all"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="cube.js"></script>-
+<script type="text/javascript" src="display.js"></script>
+<script type="text/javascript" src="hutiscrambler.js"></script>
+<script type="text/javascript" src="squanPyraScrambler.js"></script>
+<script type="text/javascript" src="language.js"></script>
+<script type="text/javascript" src="alg.js"></script>
+<script type="text/javascript" src="alg_jison.js"></script>
+<script type="text/javascript" src="hutitimer.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="HTTimer: the best cubing timer!"/>
+</head>
+<body>
+<div id="context_menu" style="visibility:hidden">
+	<div class="menupnt">HTTimer 2.1.7</div>
+	<div class="menupnt" onclick="javascript:showOptions();">O: Optionen</div>
+	<div class="menupnt" onclick="javascript:generateExport();">E: Export</div>
+	<div class="menupnt" onclick="javascript:importCode();">Import Code</div>
+	<div class="menupnt" onclick="javascript:exportCode();">X: Export Code</div>
+	<div class="menupnt" onclick="javascript:createSession();">Erstelle Session</div>
+	<div class="menupnt" onclick="javascript:startInspection();">I: Inspection starten</div>
+	<div class="menupnt" onclick="javascript:timer.saveSession(timer.config.currentSession);">S: Speichere aktuelle Session</div>
+</div>
+<div class="options" style="visibility:hidden" onclick="showOptions()" id="options">
+	<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive(6);">Farben</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(0);">Schrift</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(5);">Scrambler</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(1);">Sprache</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(2);">Start/Stop</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(3);">Tools</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(7);">Verstecken/Zeigen</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(4);">Sonstiges</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive(8);setTimeout(hideOptions,10);show('start')">zur&uuml;ck</button>
+	</div>
+	<div class="optionBottomContainer" id="select0" style="visibility:hidden;">
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','lngs725')">default</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','arial')">Arial</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','verdana')">Verdana</button>
+			<span class="helpmsg" onmouseover="$(this).html('&Auml;ndert die Schriftart systemweit.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span>
+		<hr>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','georgia')">Georgia</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Palatino Linotype')">Palatino Linotype</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Book Antiqua')">Book Antiqua</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','Palatino')">Palatino</button>
+			<span class="helpmsg" onmouseover="$(this).html('&Auml;ndert die Schriftart systemweit.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span>
+		<hr>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','courier')">Courier</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','lucida console')">Lucida Console</button>
+		<button class="btn-option" onclick="javascript:$('body').css('font-family','monaco')">Monaco</button>
+			<span class="helpmsg" onmouseover="$(this).html('&Auml;ndert die Schriftart systemweit.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span>
+	</div>
+	<br/>
+	<div class="optionBottomContainer" id="select1" style="visibility:hidden">
+		<button class="btn-option" onclick="javascript:language=deutsch">DE_DE</button>
+			<span class="helpmsg" onmouseover="$(this).html('Setzt die Sprache auf Deutsch.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:language=chinese">CH_ZN</button>
+			<span class="helpmsg" onmouseover="$(this).html('Setzt die Sprache auf Chinesich (vereinfacht).')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:language=english">EN_GB</button>
+			<span class="helpmsg" onmouseover="$(this).html('Setzt die Sprache auf Englisch.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+	</div>
+	<div class="optionBottomContainer" id="select2" style="visibility:hidden;">
+		<span id="timingmode"></span>
+		
+		<button class="btn-option" onclick="javascript:timer.timingMode=1">Leertaste</button>
+			<span class="helpmsg" onmouseover="$(this).html('Der Timer l&auml;sst sich mit der Leertaste starten. Default-Option.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.timingMode=2">Control, Control</button>
+			<span class="helpmsg" onmouseover="$(this).html('Der Timer l&auml;sst sich mit den beiden Ctrl.-Tasten starten.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<hr>
+		<button class="btn-option" onclick="javascript:timer.timingMode=0">Leertaste, V, B, N (nicht mehr empfohlen)</button>
+			<span class="helpmsg" onmouseover="$(this).html('Der Timer l&auml;sst sich mit der Leertaste und V und B und N starten. Nicht mehr empfohlen, da bei Dr&uuml;ckung von zwei Tasten gleichzeitig der Timer wieder gestartet wurde.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.timingMode=3">Javascript (nicht empfohlen)</button>
+			<span class="helpmsg" onmouseover="$(this).html('Der Timer l&auml;sst sich nur mit Javascript starten. Nicht empfohlen, weil langsam.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+	</div>
+	<div class="optionBottomContainer" id="select3" style="visibility:hidden;">
+		<button class="btn-option" onclick="javascript:timer.tool=0;drawTool()">Zeiten-&Uuml;bersicht</button>
+			<span class="helpmsg" onmouseover="$(this).html('Gibt einen &Uuml;berblick &uuml;ber die aktuellen Bestzeiten.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=1;drawTool()">Zeitenverteilung</button>
+			<span class="helpmsg" onmouseover="$(this).html('Funktioniert noch nicht.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=2;drawTool()">Scrambles malen</button>
+			<span class="helpmsg" onmouseover="$(this).html('Funktioniert noch nicht.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=3;drawTool()">Zeitenverh&auml;ltnis</button>
+			<span class="helpmsg" onmouseover="$(this).html('Gibt das Verh&auml;ltnis zwischen Bestzeit und Averages an.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=4;drawTool()">Zeiten&uuml;bersicht</button>
+			<span class="helpmsg" onmouseover="$(this).html('Zeichnet jede Zeit als Balken.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.tool=5;drawTool()">Zeitenvergleich</button>
+			<span class="helpmsg" onmouseover="$(this).html('Funktioniert noch nicht ganz.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+	</div>
+	<div class="optionBottomContainer" id="select4" style="visibility:hidden;overflow:scroll;max-height:99%;">
+		<!--Zeit zwischen Stop und Start: <span id="blocktime"></span>ms&nbsp;<button onclick="javascript:timer.blockTime+=100">+100</button><button onclick="javascript:timer.blockTime-=100">-100</button><br/>
+		Popup-R&uuml;ckgangzeit: <span id="blocktimereturn"></span>ms&nbsp;<button onclick="javascript:timer.blockTimeReturn+=100">+100</button><button onclick="javascript:timer.blockTimeReturn-=100">-100</button><br/>
+		<br/>-->
+		Relays: <button onclick="javascript:show('relays');displayRelayOption();">Puzzles ausw&auml;hlen</button><br/>
+		<hr>
+		<button class="btn-option" onclick="javascript:timer.relayWarn=true;">Bei Relays warnen</button>
+			<span class="helpmsg" onmouseover="$(this).html('Bei Auswahl von zu vielen Relay-Puzzeln eine Warnung anzeigen und blockieren.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.relayWarn=false;">Bei Relays nicht warnen</button>
+			<span class="helpmsg" onmouseover="$(this).html('Bei Auswahl von zu vielen Relay-Puzzeln keine Warnung anzeigen, aber blockieren.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<hr>
+		<button class="btn-option" onclick="javascript:timer.precision=true">Genau</button>
+			<span class="helpmsg" onmouseover="$(this).html('Die Anzeige wird auf ms genau dargestellt.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.precision=false">Ungenau</button>
+			<span class="helpmsg" onmouseover="$(this).html('Die Anzeige wird auf 100ms genau dargestellt. Alle Werte sind intern auf 1ms Genauigkeit gespeichert.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<hr>
+		ExportDesign:
+		<button class="btn-option" onclick="javascript:timer.exportDesign=0;">Id.: Zeit Scramble</button>
+			<span class="helpmsg" onmouseover="$(this).html('Beim Exportieren wird dieses Format verwendet.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=1;">Zeit, Zeit</button>
+			<span class="helpmsg" onmouseover="$(this).html('Beim Exportieren wird dieses Format verwendet.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=2;">Zeit Zeit</button>
+			<span class="helpmsg" onmouseover="$(this).html('Beim Exportieren wird dieses Format verwendet.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<button class="btn-option" onclick="javascript:timer.exportDesign=3;">Id.: Zeit</button>
+			<span class="helpmsg" onmouseover="$(this).html('Beim Exportieren wird dieses Format verwendet.')" onmouseout="$(this).html('&nbsp;?&nbsp;')">&nbsp;?&nbsp;</span><br/>
+		<hr>
+		Beim Timen:
+		<button class="btn-option" onclick="javascript:timer.displayTimeWhenSolving=false;">"solving" anzeigen</button><br/>
+		<button class="btn-option" onclick="javascript:timer.displayTimeWhenSolving=true;">aktuelle Zeit anzeigen</button>
+		<hr>
+		Custom Avg: <div id="customavganzahl">3</div>
+		<button class="btn-option" onclick="timer.customAvg++;updateOptionsCustomAvg();">+1</button><br/>
+		<button class="btn-option" onclick="timer.customAvg--;updateOptionsCustomAvg();">-1</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=10;updateOptionsCustomAvg();">+10</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=10;updateOptionsCustomAvg();">-10</button><br/>
+		<button class="btn-option" onclick="timer.customAvg+=100;updateOptionsCustomAvg();">+100</button><br/>
+		<button class="btn-option" onclick="timer.customAvg-=100;updateOptionsCustomAvg();">-100</button><br/>
+		<script>
+		function updateOptionsCustomAvg(){
+			document.getElementById("customavganzahl").innerHTML=timer.customAvg;
+		}
+		updateOptionsCustomAvg();
+		</script>
+	</div>
+	<div class="optionBottomContainer" id="select5" style="visibility:hidden;max-height:99%;overflow:scroll;">
+		Maximale Scramblerh&ouml;he:<br/>
+		<button class="btn-option" onclick="javascript:$('#scramble').css('max-height','50px');">50px</button><br/>
+		<button class="btn-option" onclick="javascript:$('#scramble').css('max-height','100px');">100px</button><br/>
+		<button class="btn-option" onclick="javascript:$('#scramble').css('max-height','150px');">150px</button><br/>
+		<button class="btn-option" onclick="javascript:$('#scramble').css('max-height','200px');">200px</button><br/>
+		<button class="btn-option" onclick="javascript:$('#scramble').css('max-height','250px');">250px</button>
+		<hr>
+		<script>var text="",i;
+		for(i=0;i<timer.scrambleTypes.length;i++){
+			text+='<button class="btn-option" onclick="javascript:switchScrambler(\''+timer.scrambleTypes[i]+'\');">'+timer.scrambleNames[i]+'</button><span class="helpmsg" onmouseover="$(this).html(\'Setzt den Scrambler auf '+timer.scrambleNames[i]+'.\')" onmouseout="$(this).html(\'&nbsp;?&nbsp;\')">&nbsp;?&nbsp;</span><br/>';
+		}document.write(text);</script>
+	</div>
+	<div class="optionBottomContainer" id="select6" style="visibility:hidden;">
+		<button class="btn-option" onclick="javascript:randomcolor();">Hauptfarbe zuf&auml;llig &auml;ndern</button><br/>
+		<button class="btn-option" onclick="javascript:randomcolor('#'+(prompt().replace('#','')));">Hauptfarbe auf RGB-Wert (6stelligen HEX-Wert) setzen</button><br/>
+		<button class="btn-option" onclick="javascript:randomcolor('#99CC29');">Hauptfarbe zur&uuml;cksetzen</button><br/>
+		<script type="text/javascript">
+		function randomcolor(value){
+			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
+			$('#config,#time_liste,#scramble,#scramble_image,#summ,#tool,#sessions,.options,.menupnt').css("background-color",value);
+		}
+		</script>
+		<h4>Farben f&uuml;r Scramblerbild</h4>
+		<button onclick="colors['W']='#FFFFFF';showOptions();" style="background-color:#FFFFFF;width:80px;color:black;">&nbsp;Wei&szlig;&nbsp;</button>
+		<button onclick="colors['W']='#EEEEEE';showOptions();" style="background-color:#EEEEEE;width:80px;color:black;">&nbsp;Wei&szlig;&nbsp;</button><br/>
+		<button onclick="colors['R']='#FF0000';showOptions();" style="background-color:#FF0000;width:80px;">&nbsp;Rot&nbsp;</button>
+		<button onclick="colors['R']='#CD0000';showOptions();" style="background-color:#CD0000;width:80px;">&nbsp;Rot&nbsp;</button>
+		<button onclick="colors['R']='#8B0000';showOptions();" style="background-color:#8B0000;width:80px;">&nbsp;Rot&nbsp;</button><br/>
+		<button onclick="colors['O']='#FFA500';showOptions();" style="background-color:#FFA500;width:80px;">&nbsp;Orange&nbsp;</button>
+		<button onclick="colors['O']='#FF0000';showOptions();" style="background-color:#FF0000;width:80px;">&nbsp;Orange&nbsp;</button>
+		<button onclick="colors['O']='#FF4500';showOptions();" style="background-color:#FF4500;width:80px;">&nbsp;Orange&nbsp;</button><br/>
+		<button onclick="colors['S']='#000000';showOptions();" style="background-color:#000000;width:80px;">&nbsp;Schwarz&nbsp;</button>
+		<button onclick="colors['S']='#121212';showOptions();" style="background-color:#121212;width:80px;">&nbsp;Schwarz&nbsp;</button><br/>
+		<button onclick="colors['G']='#FFFF00';showOptions();" style="background-color:#FFFF00;width:80px;color:black;">&nbsp;Gelb&nbsp;</button>
+		<button onclick="colors['G']='#FFD800';showOptions();" style="background-color:#FFD800;width:80px;">&nbsp;Gelb&nbsp;</button>
+		<button onclick="colors['G']='#EEEE00';showOptions();" style="background-color:#EEEE00;width:80px;color:black;">&nbsp;Gelb&nbsp;</button><br/>
+		<button onclick="colors['U']='#00FF00';showOptions();" style="background-color:#00FF00;width:80px;">&nbsp;Gr&uuml;n&nbsp;</button>
+		<button onclick="colors['U']='#32CD32';showOptions();" style="background-color:#32CD32;width:80px;">&nbsp;Gr&uuml;n&nbsp;</button>
+		<button onclick="colors['U']='#00CD00';showOptions();" style="background-color:#00CD00;width:80px;">&nbsp;Gr&uuml;n&nbsp;</button><br/>
+		<button onclick="colors['B']='#0000FF';showOptions();" style="background-color:#0000FF;width:80px;">&nbsp;Blau&nbsp;</button>
+		<button onclick="colors['B']='#0000CC';showOptions();" style="background-color:#0000CC;width:80px;">&nbsp;Blau&nbsp;</button>
+		<button onclick="colors['B']='#0000AA';showOptions();" style="background-color:#0000AA;width:80px;">&nbsp;Blau&nbsp;</button><br/>
+		<button onclick="colors['A']='#A0A0A0';showOptions();" style="background-color:#A0A0A0;width:80px;">&nbsp;Grau&nbsp;</button>
+		<button onclick="colors['A']='#C0C0C0';showOptions();" style="background-color:#C0C0C0;width:80px;">&nbsp;Grau&nbsp;</button>
+		<button onclick="colors['A']='#909090';showOptions();" style="background-color:#909090;width:80px;">&nbsp;Grau&nbsp;</button>
+		<button onclick="colors['A']='#808080';showOptions();" style="background-color:#808080;width:80px;">&nbsp;Grau&nbsp;</button><br/>
+		<br/>
+		<br/>
+		<a href="http://www.github.com/YTCuber/HTtimer">Code (Github)</a>
+	</div>
+	<div class="optionBottomContainer" id="select7" style="visibility:hidden;">
+		<button class="btn-option" onclick="javascript:show('summ');">Tool anzeigen</button><br/>
+		<button class="btn-option" onclick="javascript:hide('summ');">Tool verstecken</button>
+		<hr>
+		<button class="btn-option" onclick="javascript:show('time_list');">Zeitenliste anzeigen</button><br/>
+		<button class="btn-option" onclick="javascript:hide('time_list');">Zeitenliste verstecken</button>
+		<hr>
+		<button class="btn-option" onclick="javascript:show('virtualtimer');">Virtuellen Timer anzeigen</button><br/>
+		<button class="btn-option" onclick="javascript:hide('virtualtimer');">Virtuellen Timer verstecken</button>
+		<hr>
+		<button class="btn-option" onclick="javascript:show('display2');">Normale Anzeige anzeigen</button><br/>
+		<button class="btn-option" onclick="javascript:hide('display2');">Normale Anzeige verstecken</button>
+		<hr>
+	</div>
+	<div id="select8"></div>
+	<script>
+	var currentMenuActive=0;
+	function toggleMenuActive(id){
+		hide("select"+currentMenuActive);
+		currentMenuActive=id;
+		show("select"+currentMenuActive);
+	}
+	</script>
+</div>
+<div class="options" style="visibility:hidden" id="start">
+	<div class="right">
+		<div class="startContainer yellow" onclick="javascript:hide('start');show('hilfe')">Hilfe</div>
+		<div class="startContainer green" onclick="javascript:hide('start');algsets.display();">AlgSets</div>
+		<div class="startContainer white" onclick="javascript:hide('start');importCode();">Import</div>
+		<div class="startContainer blue" onclick="javascript:hide('start');">zur&uuml;ck</div>
+	</div>
+	<div class="left">
+		<div class="startContainer white" onclick="javascript:hide('start');showOptions()">Optionen</div>
+		<div class="startContainer red" onclick="javascript:hide('start');ziel.display();">Ziele</div>
+		<div class="startContainer green" onclick="javascript:hide('start');show('musik');">Musik</div>
+		<div class="startContainer orange" onclick="javascript:hide('start');exportCode()">Export</div>
+	</div>
+</div>
+<div class="options" style="visibility:hidden" id="musik">
+	<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(0);">Link auf Musik (mp3, wav, ogg)</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(1);">YouTube Einzelvideo</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(2);">YouTube PlayList</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(4);">Hilfe</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive2(8);hide('musik');show('start');">zur&uuml;ck</button>
+	</div>
+	<div class="optionBottomContainer" id="musik0" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.server.load();">Musik laden</button>
+	</div>
+	<div class="optionBottomContainer" id="musik1" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.youtube.load();">Musik laden</button>
+		<div id="youtubeonevideoload"></div>
+	</div>
+	<div class="optionBottomContainer" id="musik2" style="visibility:hidden;">
+		<button class="btn-option" onclick="musik.youtube.loadlist();">Musik laden</button>
+	</div>
+	<div class="optionBottomContainer" id="musik3" style="visibility:hidden;">l
+	</div>
+	<div class="optionBottomContainer" id="musik4" style="visibility:hidden;">
+		Die Musikklasse gibt die M&ouml;glichkeit, w&auml;hrend dem Timen Musik zu h&ouml;hren.<br/>
+		Die Youtube-Id ist die Zeichenfolge am Ende der URL z.B. <small>https://www.youtube.com/watch?v=</small><b>Jyrpx9rEGMI</b>
+	</div>
+	<div class="optionBottomContainer" id="musik5" style="visibility:hidden;">!
+	</div>
+	<div class="optionBottomContainer" id="musik6" style="visibility:hidden;">!
+	</div>
+	<div id="musik8"></div>
+	<script>
+	var currentMenuActive2=0;
+	function toggleMenuActive2(id){
+		hide("musik"+currentMenuActive2);
+		currentMenuActive2=id;
+		show("musik"+currentMenuActive2);
+	}
+	</script>
+</div>
+<div class="options" style="visibility:hidden" id="export"></div>
+<div class="options" style="visibility:hidden" id="relays"></div>
+<div id="ziele" class="options" style="visibility:hidden;"></div>
+<div id="algSets" class="options" style="visibility:hidden;"></div>
+<div id="hilfe" class="options" style="visibility:hidden;">
+	<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(0);">Zeiten messen</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(1);">Scrambler</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(2);">Tools</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(3);">AlgSets</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(4);">Ziele</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(5);">Optionen</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(6);">FAQ</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(8);">Getestete Browser</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(9);">Bekannte Fehler</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(10);">TODO-Liste</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(7);">Quellen</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(42);hide('hilfe');show('start');">zur&uuml;ck</button>
+	</div>
+	<div class="optionBottomContainer" id="hilfe0" style="visibility:hidden;">
+		<h2>Zeiten messen</h2>
+		Die Zeit zwischen zwei Tastendr&uuml;cken auf eine oder mehrere definierte Tasten k&ouml;nnen gemessen werden. Die Taste ist in den Optionen einstellbar. Als default-Wert ist die Leertaste eingestellt. Die gemessene Zeit wird in der Mitte dargestellt.
+		Alle Vergangenen Zeiten werden links angezeigt. Es gibt au&szlig;erdem 4 Kn&ouml;pfe. "X" l&ouml;scht die Zeit und aktualisiert die Anzeige, "+2" gibt zwei Sekunden Zeitstrafe und aktualisiert die Anzeige, "+4" gibt vier Sekunden Zeitstrafe und aktualisiert die Anzeige, "DNF" setzt den Status auf DNF, also Did Not Finish und aktualisiert die Anzeige.
+	</div>
+	<div class="optionBottomContainer" id="hilfe1" style="visibility:hidden;">
+		<h2>Scrambler</h2>
+		Der Scrambler, oben mittig angezeigt, gibt eine Folge von Z&uuml;gen aus, die vor dem L&ouml;sen ausgef&uuml;hrt sollten. Der Scramblertyp kann oben links ausgew&auml;hlt werden.<br/>
+		Viele Scrambler sind nur random-moves, f&uuml;hren also nur zuf&auml;llig gew&auml;hlte Z&uuml;ge aus, Pyraminx, Square-1 und 2x2 jedoch random-state, generieren also eine zuf&auml;llige Position. Die Blind-Scrambles sowie 'Fully Jumbled Curvy Copter Plus' haben random-moves-rotations.<br/>
+		Die kurzen Scrambler, mit 'kurz' gekennzeichnet, haben nur weniger Z&uuml;ge als die nicht gekennzeichneten.<br/>
+		Scramler f&uuml;r Shapemods entsprechen NICHT den Scramblern f&uuml;r das jeweilige Ursprungspuzzle, sondern beachten Eigenheiten wie Form, nicht eindeutige Teile, Center Orientation. So besteht der Barrel Cube scrambler aus einem premove, 2 Z&uuml;gen, die nicht unten oder oben bewegen und nicht die Form ver&auml;ndern, dann einem Zug, der aber unten und oben dreht, dann 11 Floppy-Z&uuml;gen, und dann 10 3x3-Z&uuml;gen, um die Form zu ver&auml;ndern.
+	</div>
+	<div class="optionBottomContainer" id="hilfe2" style="visibility:hidden;">
+		<h2>Tools</h2>
+		Es gibt verschiedene Zools zur Auswahl. Immer eines wird unten rechts angezeigt; welches ist in den Optionen ausw&auml;hlbar.
+	</div>
+	<div class="optionBottomContainer" id="hilfe3" style="visibility:hidden;">
+		<h2>AlgSets</h2>
+		Die AlgSets-Funktion bietet die M&ouml;glichkeit, Algorithmen d.H. Zugfolgen in Gruppen nach Funktion geordnet abzuspeichern. Sie ist mit dem Knopf oben links "AlgSets" erreichbar. Vordefinierte AlgSets werden angeboten, zurzeit allerdings nur 'PLL'.<br/>
+		Ebenfalls m&ouml;glich ist Rotation &uuml;ber alle Achsen, Ivertation und animierung der Z&uuml;ge.
+	</div>
+	<div class="optionBottomContainer" id="hilfe4" style="visibility:hidden;">
+		<h2>Ziele</h2>
+		Es ist m&ouml;glich, f&uuml;r jede Session eigene Ziele zu setzen. Die Zielseite wird mit Knopfdruck auf "Ziele" oben links aufgerufen. Es lassen sich Ziele f&uuml;r Single, Ao5, Ao12, Ao50 und einen selbst in den Optionen definierbaren AoX setzen. Bei erfolgreicher Durchf&uuml;hrung wird die Schrift gr&uuml;n, sonst bleibt sie rot.
+	</div>
+	<div class="optionBottomContainer" id="hilfe5" style="visibility:hidden;">
+		<h2>Optionen</h2>
+		Die Optionen sind unter Men&uuml;/Optionen erreichbar. In ihnen sind viele Darstellungsm&ouml;glichkeiten und Verhaltensweisen konfigurierbar.<br/>
+		Farben: &Auml;ndern der Hauptfarbe ist hier m&ouml;glich.<br/>
+		Schrift: Alles um die Schriftart.<br/>
+		Scrambler: Hier sind die Scrambler sowie die Scramblerh&ouml;he ausw&auml;hlbar.<br/>
+		Sprache: Hier kann die Sprache zwischen Englisch, Deutsch und Chinesisch ausgew&auml;hlt werden.<br/>
+		Sonstiges: Der ganze Rest!<br/>
+		Start/Stop: Wie der Timer gestartet/gestoppt werden kann.<br/>
+		Tools: Hier verstecken sich die Optionen zur Auswahl der n&uuml;tzlichen Helfer.<br/>
+		Verstecken/Zeigen: Hier k&ouml;nnen verschiedene Elemente versteckt und gezeigt werden.<br/>
+	</div>
+	<div class="optionBottomContainer" id="hilfe6" style="visibility:hidden;">
+		<h2>Frequently Asked Questions (FAQ)</h2>
+		<b>Q</b>: Wie startet man Inspection?<br/>
+		<b>A</b>: Dr&uuml;cke "I" oder Rechtsklick->"I: Inspection starten"<br/>
+		<br/>
+		<b>Q</b>: Mich nervt der virtuelle Stackmattimer. Was tun?<br/>
+		<b>A</b>: Du kannst eine normale Anzeige mit Men&uuml;->Optionen->Verstecken/Anzeigen->Virtuellen Timer verstecken, Normale Anzeige anzeigen umschalten.<br/>
+		<br/>
+		<b>Q</b>: Gibt es ein Limit in der Anzahl meine Zeiten?<br/>
+		<b>A</b>: Ja, bei etwa 10MB von Zeiten+Scrambles. Kommt also auf den Scrambler an, sollte aber f&uuml;r 100000 Solves durchschnittlich reichen.<br/>
+		<br/>
+		<b>Q</b>: Wann wird die Entwicklungsphase abgeschlossen sein?<br/>
+		<b>A</b>: Vielleicht nie, vielleicht in 10 Jahren. Der Timer ist eine Lebenszeitbaustelle, weil fast immer noch etwas hinzugef&uuml;ft werden kann. Das wichtigste wird aber in 3-5 Monaten (Ende 2016) drin sein.<br/>
+	</div>
+	<div class="optionBottomContainer" id="hilfe7" style="visibility:hidden;">
+		<h2>Hinweise und Quellen</h2>
+		F&uuml;r das Anzeigen der animierten Scrambles im AlgSet wurde alg.cubing.net verwendet.<br/>
+		Die YouTube-Musikdienste greifen auf Youtube zur&uuml;ck.<br/>
+		<a href="https://cubing.github.io/icons/">Hier</a> kommen die Icons her.<br/>
+		Jquery 1.10.2 wird genutzt.
+	</div>
+	<div class="optionBottomContainer" id="hilfe8" style="visibility:hidden;">
+		<h3>Getestete Browser und Browserversionen:</h3>
+		<ul>
+			<li>Chrome  49.0.2623.112, Windows 10</li>
+			<li>Chrome  51.0.2704.79 , Debian Testing</li>
+			<li>Opera   37           , OS X 10.8</li>
+			<li>Firefox 44.0         , Debian Testing</li>
+			<li>Firefox 45.0         , Debian Testing</li>
+			<li>Firefox 45.0         , OS X 10.8</li>
+			<li>Firefox 45.0.2       , Windows 10</li>
+			<li>Firefox 45.0.2       , Debian</li>
+			<li>Firefox 46.0         , Debian Testing</li>
+			<li>Firefox 46.0         , OS X 10.8</li>
+			<li>Firefox 47.0         , Windows 10</li>
+		</ul>
+	</div>
+	<div class="optionBottomContainer" id="hilfe9" style="visibility:hidden;">
+		<h3>Bekannte Fehler</h3>
+		<ol>
+			<li>Probleme beim Stoppen mit beiden Ctrl.-Tasten gleichzeitig
+			<li>Farbenauswahl basiert noch auf Zufallsprinzip
+			<li>YouTube-Playlists werden nicht vern&uml;nftig dargestellt
+			<li>Optionen werden bei Neuladen teilweise zur&uuml;ckgesetzt
+			<li>Darstellung auf Linux
+			<li>Sessions umbenennen
+		</ol>
+	</div>
+	<div class="optionBottomContainer" id="hilfe10" style="visibility:hidden;">
+		<h3>TODO-Liste</h3>
+		<ul>
+			<li>02.06.2016: Fisher Cube Scrambler
+			<li>06.06.2016: Sessions umbenennen
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017: App
+		</ul>
+	</div>
+	<div id="hilfe42"></div>
+	<script>
+	var currentMenuActive3=0;
+	function toggleMenuActive3(id){
+		hide("hilfe"+currentMenuActive3);
+		currentMenuActive3=id;
+		show("hilfe"+currentMenuActive3);
+	}
+	</script>
+</div>
+<div id="time_liste" style="overflow:auto;">
+	<div id="session"></div>
+	<div id="time_list"></div>
+</div>
+<div id="config">
+	<button class="btn-lg" onclick="javascript:show('start');">Men&uuml;</button>
+</div>
+<div id="display2" onclick="javascript:if(timer.running){stop();}else{start()};" style="user-select:none;-o-user-select:none;-webkit-touch-callout:none;-webkit-user-select: none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;visibility:hidden;" unselectable="on" onselectstart="return false;" onmousedown="return false;">0.000</div>
+<div id="scrambleImage"></div>
+<div id="sessions"><button onclick="javascript:sessionManager.display();" class="btn btn-lg">Sessionmanager</button></div>
+<div id="scramble" style="overflow:auto;"></div>
+<div id="summ"></div>
+<div id="tool">Scramble image unavailable for this scrambler type.</div>
+<div id="timeDetails" class="options" style="visibility:hidden"></div>
+<div id="session-manager" class="options" style="visibility:hidden;"></div>
+<div id="virtualtimer">
+	<img src="https://lh4.ggpht.com/WDeNuUqNfaI5w2GxL2JaMpVJcdZRLA2hPadVbP_d8p4Cwh8qXUveEvVQC9HAVq30zmvS=w300" width="255" id="hand-left" onclick="javascript:if(timer.running){stop();}else{start()};"/>
+	<img src="https://lh4.ggpht.com/WDeNuUqNfaI5w2GxL2JaMpVJcdZRLA2hPadVbP_d8p4Cwh8qXUveEvVQC9HAVq30zmvS=w300" width="255" id="hand-right" onclick="javascript:if(timer.running){stop();}else{start()};"/>
+	<div id="timer-display">
+		<div id="display_out"><span id="display" onclick="var a=prompt('Zeit manuell setzen');timer.zeit=Math.floor(+new Date()-a-80);stop();">0.000</span></div>
+		<div id="timer-reset" onclick="javascript:document.getElementById('display').innerHTML='0.000';">&nbsp;</div>
+		<div id="timer-on" onclick="javascript:$('#display').toggleClass('hid');">&nbsp;</div>
+		<div id="timer-leds">
+			<div id="timer-greenled">&nbsp;</div>
+			<div id="timer-redled">&nbsp;</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	displayScramble();
+	displayScrambler();
+	drawTool();
+	createSession();
+	menuworking();
+	eval(localStorage.HTexport||"");
+	displayTimes();
+	displaySessions();
+	drawTool();
+	setInterval(menuworking,1000);
+});
+</script>
+<style>
+window#JSConsoleWindow {display: none !important;}
+#javascriptConsole {display: none !important;}
+</style>
+<noscript>
+Um diesen Timer nutzen zu k&ouml;nnen, m&uuml;ssen Sie Javascript aktivieren!
+</noscript>
+</body>
+</html>

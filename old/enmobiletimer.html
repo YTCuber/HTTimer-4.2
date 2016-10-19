@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+<head>
+<title>HTtimer 3.0.0</title>
+<link rel="stylesheet" type="text/css" href="mobilecss.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="https://cubing.github.io/icons/css/cubing-icons.css" media="all"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--würde lieber ohne nichtselbstgeschriebenes js auskommen-->
+<script type="text/javascript" src="display.js"></script>
+<script type="text/javascript" src="nxnPosition.js"></script>
+<script type="text/javascript" src="hutiscrambler.js"></script>
+<script type="text/javascript" src="squanPyraScrambler.js"></script>
+<script type="text/javascript" src="language.js"></script>
+<script type="text/javascript" src="alg.js"></script>
+<script type="text/javascript" src="alg_jison.js"></script>
+<script type="text/javascript" src="hutitimer.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+<!-- <div class="options" style="visibility:hidden;display:none" id="start">
+	<div class="right">
+		<div class="startContainer yellow" onclick="javascript:hide('start');show('hilfe')">Hilfe</div>
+		<div class="startContainer green" onclick="javascript:hide('start');algsets.display();">AlgSets</div>
+		<div class="startContainer white" onclick="javascript:hide('start');importCode();">Import</div>
+		<div class="startContainer blue" onclick="javascript:hide('start');">zur&uuml;ck</div>
+	</div>
+	<div class="left">
+		<div class="startContainer white" onclick="javascript:hide('start');showOptions()">Optionen</div>
+		<div class="startContainer red" onclick="javascript:hide('start');ziel.display();">Ziele</div>
+		<div class="startContainer green" onclick="javascript:hide('start');show('musik');">Musik</div>
+		<div class="startContainer orange" onclick="javascript:hide('start');exportCode()">Export</div>
+	</div>
+</div> -->
+
+<div id="mobile-bottom">
+	<div class="bottom-button" id="mobile-bottom-right" onclick="javascript:slideRight();">&gt;</div>
+	<div class="bottom-button" id="mobile-bottom-left"  onclick="javascript:slideLeft();" >&lt;</div>
+	<div class="bottom-button" id="mobile-bottom-middle">HTTimer 2.1.7</div>
+</div>
+
+<div id="display2" style="display:none;visibility:hidden;"></div>
+
+<div class="slider" id="slider1">
+	<div id="scramble" style="overflow:auto;"></div>
+	<div id="timer-start">
+		<div id="timer-display">
+			<div id="display_out"><span id="display">0.000</span></div>
+		</div>
+	</div>
+</div>
+<div class="slider" id="slider3" style="display:none">
+	<div id="scrambleImage" style="visibility:hidden;display:none;"></div>
+	<div id="sessions"></div>
+	<div id="summ" style="visibility:hidden;display:none;"></div>
+</div>
+<div class="slider" id="slider0" style="display:none">
+	<div id="time_liste" style="overflow:auto;">
+		<div id="time_list"></div>
+	</div>
+</div>
+<div class="slider" id="slider2" style="display:none">
+	<div id="time_liste" style="overflow:auto;">
+		<div id="session"></div>
+	</div>
+</div>
+<div class="slider" id="slider7" style="display:none">
+	<div class="options" style="visibility:hidden;display:none" id="export"></div>
+	<div class="options" style="visibility:hidden;display:none" id="relays"></div>
+	<div id="ziele" class="options"></div>
+</div>
+<div class="slider" id="slider4" style="display:none">
+	<div id="algSets" class="options" style="visibility:hidden;display:none;"></div>
+</div>
+<div class="slider" id="slider5" style="display:none">
+	<div id="hilfe">
+		<div class="left menu-left">
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(0);">Measuring times</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(1);">Scrambler</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(2);">Tools</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(3);">AlgSets</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(4);">Goals</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(5);">Optiones</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(6);">FAQ</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(8);">Tested Browser</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(9);">Known Bugs</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(10);">TODO-List</button>
+		<button class="accordion2" onclick="javascript:toggleMenuActive3(7);">Sources</button>
+	</div>
+	<div class="optionBottomContainer" id="hilfe0" style="visibility:hidden;">
+		<h2>Measuring times</h2>
+		The timer measures the time between two hits on a speficic key, per default the spacebar, settable in the options. The current time is displayed in the middle.<br>
+		All past times get displayed on the left. The buttons next to each time modify the saved data for it. "X" deletes the time, "+2" sets a 2 second penalty, "+4" sets a 4 second penalty, "DNF" DNFs the solve.
+	</div>
+	<div class="optionBottomContainer" id="hilfe1" style="visibility:hidden;">
+		<h2>Scrambler</h2>
+		The Scrambler, displayer at the top-moddle, outputs a sequence of moves for the currently selected puzzle, which may be applied on the solved cube before timing the solving progress. You can select the puzzle and its differend scramble types at the left.<br>
+		Scramblers for Shapemods are not the same as the scramblers for the original, unmodded base puzzle. They take the rotation of centers, equalizeness of the pieces and missing orientation or permutation into account.
+	</div>
+	<div class="optionBottomContainer" id="hilfe2" style="visibility:hidden;">
+		<h2>Tools</h2>
+		There are differend Tools to select. Always one is selected at the top right, you can select which one in the options.
+	</div>
+	<div class="optionBottomContainer" id="hilfe3" style="visibility:hidden;">
+		<h2>AlgSets</h2>
+		The AlgSets-Function makes it possible to save algorithms in groups ordered by affect on the pieces of the cube. I gets called by the button "AlgSets" in the Main Menu. Some AlgSets are predefined, currently just PLL; you can overwrite it if you want.<br>
+		It is also possible to rotate over all axises, inversion and creating an animation of how the moves affect a solved 3x3.
+	</div>
+	<div class="optionBottomContainer" id="hilfe4" style="visibility:hidden;">
+		<h2>Goals</h2>
+		It is possible to set individual goals for single, ao5, ao12, ao50 and one user-defined average for each session. When successfully archieving the goal, the font changes color to green, else it stays red.
+	</div>
+	<div class="optionBottomContainer" id="hilfe5" style="visibility:hidden;">
+		<h2>Options</h2>
+		Die Optionen sind unter Menu/Optionen erreichbar. In ihnen sind viele Darstellungsm&ouml;glichkeiten und Verhaltensweisen konfigurierbar.<br>
+		Farben: &Auml;ndern der Hauptfarbe ist hier m&ouml;glich.<br>
+		Schrift: Alles um die Schriftart.<br>
+		Scrambler: Hier sind die Scrambler sowie die Scramblerh&ouml;he ausw&auml;hlbar.<br>
+		Sprache: Hier kann die Sprache zwischen Englisch, Deutsch und Chinesisch ausgew&auml;hlt werden.<br>
+		Sonstiges: Der ganze Rest!<br>
+		Start/Stop: Wie der Timer gestartet/gestoppt werden kann.<br>
+		Tools: Hier verstecken sich die Optionen zur Auswahl der nutzlichen Helfer.<br>
+		Verstecken/Zeigen: Hier k&ouml;nnen verschiedene Elemente versteckt und gezeigt werden.<br>
+	</div>
+	<div class="optionBottomContainer" id="hilfe6" style="visibility:hidden;">
+		<h2>Frequently Asked Questions (FAQ)</h2>
+		<b>Q</b>: Wie startet man Inspection?<br>
+		<b>A</b>: Drucke "I" oder Rechtsklick->"I: Inspection starten"<br>
+		<br>
+		<b>Q</b>: Mich nervt der virtuelle Stackmattimer. Was tun?<br>
+		<b>A</b>: Du kannst eine normale Anzeige mit Menu->Optionen->Verstecken/Anzeigen->Virtuellen Timer verstecken, Normale Anzeige anzeigen umschalten.<br>
+		<br>
+		<b>Q</b>: Gibt es ein Limit in der Anzahl meine Zeiten?<br>
+		<b>A</b>: Ja, bei 4MB von Zeiten+Scrambles. Kommt also auf den Scrambler an, sollte aber fur 100000 Solves durchschnittlich reichen.<br>
+		<br>
+		<b>Q</b>: Wann wird die Entwicklungsphase abgeschlossen sein?<br>
+		<b>A</b>: Vielleicht nie, vielleicht in 10 Jahren. Der Timer ist eine Lebenszeitbaustelle, weil fast immer noch etwas hinzugefuft werden kann. Das wichtigste wird aber in 3-5 Monaten drin sein.<br>
+	</div>
+	<div class="optionBottomContainer" id="hilfe7" style="visibility:hidden;">
+		<h2>Sources</h2>
+		We used alg.cubing.net for displaying the animated algorithms in AlgSets.<br>
+		YouTube-Music uses Videos from YouTube.<br>
+		The Icons are from <a href="https://cubing.github.io/icons/">here</a>.<br>
+		Jquery 1.10.2 is used.
+	</div>
+	<div class="optionBottomContainer" id="hilfe8" style="visibility:hidden;">
+		<h3>Tested Browsers and Versions:</h3>
+		<ul>
+			<li>Firefox 45.0.2       , Windows 10 and Debian (Linux)</li>
+			<li>Chrome  49.0.2623.112, Windows 10</li>
+		</ul>
+	</div>
+	<div class="optionBottomContainer" id="hilfe9" style="visibility:hidden;">
+		<h3>Known Bugs</h3>
+		<ol>
+		<li>Starting and stopping with both ctrl.-Keys at the same time has problems.
+		<li>Selecting colors is only possible by random
+		<li>Multiple YouTube-Playlists make problems
+		<li>Options reset when reloading
+		<li>Font Linux
+		<li>Random State 3x3 Scrambler
+		</ol>
+	</div>
+	<div class="optionBottomContainer" id="hilfe10" style="visibility:hidden;">
+		<h3>TODO-List</h3>
+		<ul>
+			<li>03.06.2016: Fisher Cube Scrambler
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017: App
+		</ul>
+	</div>
+	<div id="hilfe42"></div>
+	<script>
+	var currentMenuActive3=0;
+	function toggleMenuActive3(id){
+		hide("hilfe"+currentMenuActive3);
+		currentMenuActive3=id;
+		show("hilfe"+currentMenuActive3);
+	}
+	</script>
+	</div>
+</div>
+<div class="slider" id="slider6" style="display:none">
+	Der ganze Rest:
+	<br>
+	<button onclick="exportCode();">Solves auf Ger&auml;t speichern</button>
+</div>
+
+<script> 
+$( "#timer-start" ).bind( "click ", function() {
+  if(timer.running){
+	stop();
+  }else{
+	start();
+  }
+});
+$( ".slider" ).bind( "swipeleft ", function() {
+  slideRight();
+});
+$( ".slider" ).bind( "swiperight ", function() {
+  slideLeft();
+});
+
+var currentSlide=1;
+function slideLeft(){
+	displaySlides(-1);
+}
+function slideRight(){
+	displaySlides(1);
+}
+function displaySlides(rotation){
+	hide('slider'+currentSlide);
+	currentSlide+=rotation;
+	currentSlide<0?currentSlide=0:false;
+	currentSlide>6?currentSlide=6:false;
+	show('slider'+currentSlide);
+}
+
+displayScramble();
+drawTool();
+createSession();
+menuworking();
+eval(localStorage.HTexport||"");
+displayTimes();
+displaySessions();
+drawTool();
+setInterval(menuworking,1000);
+algsets.display();
+ziel.display();
+
+function show(a){
+	document.getElementById(a).style.display="block";
+	document.getElementById(a).style.visibility="visible";
+}
+function hide(a){
+	document.getElementById(a).style.display="none";
+	document.getElementById(a).style.visibility="hidden";
+}
+function displayTimes(){
+	document.getElementById("time_list").innerHTML="";
+	var i,text="";
+	for(i=0;i<timer.config.results.length;i++){
+		text+="<div class='time_liste'>";
+		zeit=timer.config.results[i].zeit,
+		scramble=timer.config.results[i].scramble,
+		penalty=timer.config.results[i].penalty;
+		if(penalty!="DNF"){
+			text+=(i+1)+".: "+format(zeit);
+			if(penalty=="+2"){
+				text+="+";
+			}
+			if(penalty=="+4"){
+				text+="++";
+			}
+		}else{
+			text+=(i+1)+".: DNF";
+		}
+		text+="<div style='float:right;'>";
+	
+		text+="<button onclick='javascript: deletetime("+i+");'>X</button>";
+		if(penalty==""){
+			text+="<button onclick='javascript: givePenalty("+i+",\"+2\");'>+2</button>";
+			text+="<button onclick='javascript: givePenalty("+i+",\"+4\");'>+4</button>";
+			text+="<button onclick='javascript: givePenalty("+i+",\"DNF\");'>DNF</button>";
+		}
+		if(penalty=="+2"){
+			text+="<button onclick='javascript: givePenalty("+i+",\"+2\");'>+2</button>";
+			text+="<button onclick='javascript: givePenalty("+i+",\"-2\");'>-2</button>";
+		}else if(penalty=="DNF"){
+			text+="<button onclick='javascript: givePenalty("+i+",\"-DNF\");'>-DNF</button>";
+		}else if(penalty=="+4"){
+			text+="<button onclick='javascript: givePenalty("+i+",\"-2\");'>-2</button>";
+			text+="<button onclick='javascript: givePenalty("+i+",\"-4\");'>-4</button>";
+		}
+		text+="</div><br></div>";
+	
+	}
+	document.getElementById("time_list").innerHTML+=text;
+}
+function displayScrambler(a){
+	var text="",i;
+	for(i=0;i<timer.scrambleTypes.length;i++){
+		if(optionbreaks[i]==1)text+="</div><button class='accordion2'>"+optiontexts[i]+"</button>";
+		text+="<div class='scrambler-div' onclick='switchScrambler(\""+timer.scrambleTypes[i]+"\")'>"+timer.scrambleNames[i]+"</div>";
+	}
+	$("#session").html(text);
+	if(a)$(a).html(text);
+}
+</script>
+</body>
+</html>

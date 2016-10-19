@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>HTTimer funcionality test</title>
+	<link rel="stylesheet" href="qunit-1.12.0.css">
+	<script type="text/javascript" src="qunit-1.12.0.js"            ></script>
+	<script type="text/javascript"                >window.modules={};</script>
+	<script type="text/javascript" src="../js/cube.js"              ></script>
+	<script type="text/javascript" src="../js/display.js"           ></script>
+	<script type="text/javascript" src="../js/hutiscrambler.js"     ></script>
+	<script type="text/javascript" src="../js/squanPyraScrambler.js"></script>
+	<script type="text/javascript" src="../js/language.js"          ></script>
+	<script type="text/javascript" src="../js/alg.js"               ></script>
+	<script type="text/javascript" src="../js/alg_jison.js"         ></script>
+	<script type="text/javascript" src="../js/hutitimer.js"         ></script>
+	<script> 
+	test('format()',function(){
+		equal(format(0),"0.000","0->0.000");
+		equal(format("Ente"),"DNF","Ente->DNF");
+		equal(format(2222),"2.222","2222->2.222");
+		equal(format(100000),"1:40.000","100000->1:40.000");
+	});
+	test('algsets.invert()',function(){
+		equal(algsets.invert("R"),"R'","R->R'");
+		equal(algsets.invert("R U"),"U' R'","R U->U' R'");
+		equal(algsets.invert("mpgs"),"","mpgs->");
+	});
+	</script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="mobile" style="display:none;">
+<div id="top">
+<div id="scramble"></div>
+<div id="mobilescramble">
+<div id="mobiletype"></div>
+<div id="mobilenext"></div>
+</div>
+</div>
+<div id="timelist"><div id="times"></div></div>
+<div id="time"></div>
+<div id="scrambleImage"></div>
+<div id="mobilebottom">
+<div id="sessions-mobile"></div>
+<div id="menu-icon-mobile"></div>
+</div>
+<div class="options-left" id="menu" style="visibility:hidden;">
+<button></button>
+</div>
+<div id="sessions" class="options" style="visibility:hidden;"></div>
+</div>
+<div id="big" style="display:none;">
+<div class="head">
+<div class="menulogo"></div>
+<div class="menulogo menuopen"></div>
+<div class="scramblewrap">
+<div class="scramble"></div>
+<div class="scrambleop"></div>
+</div>
+<div class="next"></div>
+</div>
+<div class="side">
+<div class="sessions">
+<div class="sessionlist"></div>
+<div class="sessionavg"></div>
+<div class="times"></div>
+</div>
+<div class="option">
+</div>
+</div>
+<div class="main">
+<div class="time">
+</div>
+<div class="scrambleimg">
+</div>
+</div>
+</div>
+<div class="options" id="timeDetails" style="visibility:hidden;"></div>
+<div class="options" id="export"      style="visibility:hidden;"></div>
+<div class="options" id="export"      style="visibility:hidden;"></div>
+<div class="options" id="relays"      style="visibility:hidden;"></div>
+<div class="options" id="ziele"       style="visibility:hidden;"></div>
+<div class="options" id="algSets"     style="visibility:hidden;"></div>
+<div class="options" id="scrambler"   style="visibility:hidden;"></div>
+<div class="options" id="takeabreak"  style="visibility:hidden;"></div>
+</body>
+</html>

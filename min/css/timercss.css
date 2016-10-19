@@ -1,0 +1,344 @@
+/*Styles for both*/
+.options {
+	background-color:white;
+	border: 1px solid #777;
+	position:absolute;
+	top:20px;
+	bottom:20px;
+	left:20px;
+	right:20px;
+	z-index:9999;
+	overflow:scroll;
+	border-radius:3px;
+}
+.optionBottomContainer {
+	position:absolute;
+	left:250px;
+	right:0;
+	bottom:0;
+	top:0;
+	float:right;
+	font-size:20pt;
+	padding:5px;
+	margin:5px;
+}
+.menu-left {
+	width:250px;
+	max-width:250px;
+}
+button.accordion2 {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 13px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px !important;
+    transition: 0.2s;
+}
+button.accordion2.active, button.accordion2:hover {
+    background-color: #ddd;
+}
+body {
+	overflow:hidden;
+}
+.helpmsg {
+	font-size:15pt;
+	background-color:#D2D2D2;
+	border: 1px solid black;
+	min-height:28px;
+	float:right;
+	max-width:742px;
+}
+
+/*Mobile*/
+@media only screen and (max-width: 500px) {
+	body {
+		color:#5c5c5c;
+		background-color:white;
+		font-size:15pt;
+		padding:1px;
+		margin:1px;
+		font-family:Futura,sans-serif,Arial;
+		color:#193409;
+	}
+	#top,#timelist,#scrambleImage,#mobilebottom {
+		background-color:#f7f7f7;
+	}
+	#next:hover,#scrambletype:hover {
+		color:#0fddaf;
+	}
+	#next {
+		font-size:20pt;
+		float:right;
+		text-align:center;
+	}
+	#scramble {
+		font-size:25pt;
+		padding-top:4px;
+		margin-left:2px;
+	}
+	#scrambleImage {
+		position:absolute;
+		left:342px;
+		bottom:0;
+		min-width:50px;
+		min-height:50px;
+		border-radius:3px;
+		border:1px solid #777;
+	}
+	#scrambletype {
+		float:right;
+		margin-right:40%;
+	}
+	#menu-icon {
+		float:left;
+		text-align:center;
+		margin:5px;
+		margin-right:4.2%;
+		padding:3px;
+		border-radius:3px;
+	}
+	#menu-icon:hover,button:hover {
+		background-color:#c3c3c3;
+	}
+	#top {
+		position:absolute;
+		top:0;
+		left:0;
+		right:0;
+		height:70px;
+		z-index:998;
+		-webkit-box-shadow:0px 3px 10px grey;
+		-moz-box-shadow:0px 3px 10px grey;
+		box-shadow:0px 3px 10px grey;
+	}
+	#time {
+		position:absolute;
+		left:38%;
+		top:37%;
+		font-size:180pt;
+		font-family:'LiHei Pro',LiHei,'lihei pro',lihei;
+	}
+	#timelist {
+		position:absolute;
+		bottom:0;
+		left:0;
+		top:70px;
+		width:200px;
+		-webkit-box-shadow:3px -3px 10px grey;
+		-moz-box-shadow:3px -3px 10px grey;
+		box-shadow:3px -3px 10px grey;
+		overflow:scroll;
+	}
+	button {
+		border:1px solid #888;
+		padding:1px;
+		border-radius:2px;
+		background-color:transparent;
+	}
+	.options-left {
+		background-color:white;
+		border: 1px solid #777;
+		position:absolute;
+		top:0;
+		bottom:0;
+		left:0;
+		width:300px;
+		z-index:999;
+	}
+	#mobilebottom,#menu-icon-mobile,#sessions-mobile,#mobiletype,#mobilenext {
+		display:none;
+	}
+
+	#top {
+		width:100%;
+		height:30%;
+	}
+	#time {
+		font-size:110pt;
+		left:25%;
+		top:34%;
+	}
+	#scrambletype,#menu-icon,#next,#scrambleImage{
+		display:none;
+	}
+	#timelist {
+		visibility:hidden;
+	}
+	#mobilebottom {
+		display:block;
+		position:absolute;
+		left:0;
+		right:0;
+		bottom:0;
+		height:15%;
+		z-index:998;
+	}
+	#mobilescramble,#mobilebottom {
+		display:block;
+		height:27px;
+		border-top:1px solid #777;
+	}
+	#sessions-mobile,#menu-icon-mobile,#mobilenext,#mobiletype  {
+		width:50%;
+		display:inline-block;
+		margin:auto;
+		text-align:center;
+	}
+	#mobilenext,#sessions-mobile {
+		float:right;
+	}
+	#big {
+		display:none;
+	}
+}
+
+
+/*bigger than Mobile*/
+@media only screen and (min-width: 500px) {
+	body,*{
+		box-sizing: border-box;
+		padding:0;
+		margin:0;
+		font-family:Futura, sans-serif;
+		color:#5c5c5c;
+		-moz-transition:.4s ease all;
+		-webkit-transition:.4s ease all;
+		-o-transition:.4s ease all;
+		transition:.4s ease all;
+	}
+	body{
+		overflow:hidden;
+	}
+	.head{
+		width:100%;
+		height:70px;
+		position:relative;
+		background-color:#f7f7f7;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		z-index: 998;
+	}
+	.side{
+		height:90vh;
+		width:20%;
+		float:left;
+		background-color:#f7f7f7;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		padding:1%;
+		overflow:scroll;
+	}
+	.main{
+		width:80%;
+		float:right;
+		position:relative;
+		height:calc(100vh - 70px);
+		padding:1%;
+	}
+	.menulogo{
+		width:20%;
+		float:left;
+		height:100%;
+		line-height:70px;
+		text-align:center;
+		font-size:2.5em;
+		cursor:pointer;
+	}
+	.menulogo:hover{
+		color:#0fddaf;
+	}
+	.scramblewrap{
+		height:100%;
+		position:absolute;
+		left:20%;
+	}
+	.scramble{
+		font-size:2em;
+		position: relative;
+	}
+	.scrambleop{
+		float:right;
+		font-size:1.5em;
+		cursor:pointer;
+	}
+	.scrambleop:hover{
+		color:#0fddaf;
+	}
+	.scrambleimg{
+		background-color:#f7f7f7;
+		padding:1%;
+		width:30%;
+		position:absolute;
+		bottom:0;
+		left:35%;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	}
+	.time{
+		font-family:'LiHei Pro',LiHei,'lihei pro',lihei;
+		font-size:16em;
+		text-align:center;
+	}
+	.next{
+		float:right;
+		width:10%;
+		text-align:center;
+		font-size:2em;
+		line-height:70px;
+		cursor:pointer;
+	}
+	.next:hover{
+		color:#0fddaf;
+	}
+	.option{
+		display:none;
+	}
+	.side table{
+		width:100%;
+		text-align:center;
+	}
+	.side .sessionlist select{
+		width:20vw;
+		margin-left:-5%;
+		appearance:none;
+		-webkit-appearance:none;
+		-moz-appearance:none;
+		background:#f4f4f4;
+		border:0;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		padding:3px;
+		font-size:1.2em;
+		border-radius:0;
+	}
+	.side .times{
+		width:100%;
+		text-align:center;
+		font-size:1.1em;
+	}
+	.side .times select{
+		appearance:none;
+		-webkit-appearance:none;
+		-moz-appearance:none;
+		background:#f4f4f4;
+		border:0;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		padding:1px;
+		font-size:1em;
+	}
+	.options h2{
+		font-size: 2em;
+		text-align:center;
+		margin-bottom: 10px;
+	}
+	.startContainer{
+		padding:2px;
+		border:1px solid black;
+	}
+	#mobile{
+		display:none;
+	}
+	.menuopen{
+		display:none;
+	}
+}

@@ -1,0 +1,205 @@
+<div id="mobile">
+			<div id="top">
+				<div id="scramble"></div>
+				<div id="mobilescramble">
+					<div id="mobiletype">SCRAMBLE TYPE</div>
+					<div id="mobilenext">NEXT SCRAMBLE&nbsp;&gt;</div>
+				</div>
+			</div>
+			<div id="timelist"><div class="times"></div></div>
+			<div class="time">0.00</div>
+			<div id="scrambleImage">Scramble image not available.</div>
+			<div id="mobilebottom">
+				<div id="sessions-mobile">SESSIONS</div>
+				<div id="menu-icon-mobile">MENU</div>
+			</div>
+			<div class="options-left" id="menu" style="visibility:hidden;">
+				More functions:
+				<div class="startContainer" onclick="javascript:show('hilfe');">Help</div>
+				<!--<div class="startContainer" onclick="javascript:algsets.display();">AlgSets</div>-->
+				<div class="startContainer">AlgSets (disabled)</div>
+				<div class="startContainer" onclick="javascript:importCode();">Import</div>
+				<div class="startContainer" onclick="javascript:show('options');">Options</div>
+				<div class="startContainer" onclick="javascript:ziel.display();">Goals</div>
+				<div class="startContainer" onclick="javascript:show('musik');">Music</div>
+				<div class="startContainer" onclick="javascript:exportCode();">Export</div>
+				<div class="startContainer" onclick="javascript:takeabreak();">Take a break</div>
+				<button onclick='hide("menu");'>back</button>
+			</div>
+			<div id="sessions" onclick="hide('sessions');" class="options" style="visibility:hidden;"></div>
+		</div>
+		
+		
+		
+		
+		<div>
+			<button class="edit btn btn-default">Edit</button>
+		</div>
+
+
+
+
+
+<style>
+	/*Mobile*/
+
+@media only screen and (max-width: 500px) {
+    body {
+        color: #5c5c5c;
+        background-color: white;
+        font-size: 15pt;
+        padding: 1px;
+        margin: 1px;
+        font-family: Futura, sans-serif, Arial;
+        color: #193409;
+    }
+    #top,
+    #timelist,
+    #scrambleImage,
+    #mobilebottom {
+        background-color: #f7f7f7;
+    }
+    #next:hover,
+    #scrambletype:hover {
+        /*color:#0fddaf;*/
+        
+        color: #563d7c
+    }
+    #next {
+        font-size: 20pt;
+        float: right;
+        text-align: center;
+    }
+    #scramble {
+        font-size: 25pt;
+        padding-top: 4px;
+        margin-left: 2px;
+    }
+    #scrambleImage {
+        position: absolute;
+        left: 342px;
+        bottom: 0;
+        min-width: 50px;
+        min-height: 50px;
+        border-radius: 3px;
+        border: 1px solid #777;
+    }
+    #scrambletype {
+        float: right;
+        margin-right: 40%;
+    }
+    #menu-icon {
+        float: left;
+        text-align: center;
+        margin: 5px;
+        margin-right: 4.2%;
+        padding: 3px;
+        border-radius: 3px;
+    }
+    #menu-icon:hover,
+    button:hover {
+        background-color: #c3c3c3;
+    }
+    #top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        z-index: 998;
+        -webkit-box-shadow: 0px 3px 10px grey;
+        -moz-box-shadow: 0px 3px 10px grey;
+        box-shadow: 0px 3px 10px grey;
+    }
+    .time {
+        position: absolute;
+        left: 38%;
+        top: 37%;
+        font-size: 180pt;
+        font-family: 'LiHei Pro', LiHei, 'lihei pro', lihei;
+    }
+    #timelist {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        top: 70px;
+        width: 200px;
+        -webkit-box-shadow: 3px -3px 10px grey;
+        -moz-box-shadow: 3px -3px 10px grey;
+        box-shadow: 3px -3px 10px grey;
+        overflow: scroll;
+    }
+    button {
+        border: 1px solid #888;
+        padding: 1px;
+        border-radius: 2px;
+        background-color: transparent;
+    }
+    .options-left {
+        background-color: white;
+        border: 1px solid #777;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 300px;
+        z-index: 999;
+    }
+    #mobilebottom,
+    #menu-icon-mobile,
+    #sessions-mobile,
+    #mobiletype,
+    #mobilenext {
+        display: none;
+    }
+    #top {
+        width: 100%;
+        height: 30%;
+    }
+    .time {
+        font-size: 110pt;
+        left: 25%;
+        top: 34%;
+    }
+    #scrambletype,
+    #menu-icon,
+    #next,
+    #scrambleImage {
+        display: none;
+    }
+    #timelist {
+        visibility: hidden;
+    }
+    #mobilebottom {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 15%;
+        z-index: 998;
+    }
+    #mobilescramble,
+    #mobilebottom {
+        display: block;
+        height: 27px;
+        border-top: 1px solid #777;
+    }
+    #sessions-mobile,
+    #menu-icon-mobile,
+    #mobilenext,
+    #mobiletype {
+        width: 50%;
+        display: inline-block;
+        margin: auto;
+        text-align: center;
+    }
+    #mobilenext,
+    #sessions-mobile {
+        float: right;
+    }
+    #big {
+        display: none;
+    }
+}
+</style>

@@ -1,0 +1,13 @@
+*.swp
+*.class
+dist/
+build/
+bin/
+bin_tnoodle_resources/
+.settings
+.externalToolBuilders
+.metadata
+tmtc
+*.pyc
+*.log.*
+node_modules/
