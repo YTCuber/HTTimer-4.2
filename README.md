@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 HTTimer
 -------
 
@@ -14,3 +15,6 @@ What is where?
 * /readme.me: What you are currently reading
 
 The new big design is by bgrgndz and has changes by me, the old design, JS and new mobile design is by me.
+=======
+# HTTimer-4.2-Alpha
+>>>>>>> 48acafa69509ca74610ad20b8798b74e0e2d4eb6
