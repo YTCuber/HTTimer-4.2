@@ -315,7 +315,7 @@
 		}
 		function randomcolor(value){
 			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
-			$('body').css("background-color",value);
+			$('body,.time').css("background-color",value);
 		}
 		function randomftcolor(value){
 			if(typeof value=="undefined")value="#"+Math.random().toString(16).slice(2,8);
@@ -349,12 +349,14 @@
 	</div>
 	<div class="optionBottomContainer" id="select0" style="visibility:hidden;">
 		<h3>Select Theme</h3>
-		<button class="btn-option" onclick="javascript:randombgcolor('#222277');randomcolor('#99CC29');randomftcolor('#000000');">Old Design</button><br/>
-		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#000000');randomftcolor('#808080');">Dark</button><br/>
-		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#efef10');randomftcolor('#242424');">Yellow</button><br/>
-		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#ffb822');randomftcolor('#234323');">Orange</button><br/>
-		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#00dd00');randomftcolor('#202020');">Green</button><br/>
-		<button class="btn-option" onclick="javascript:randombgcolor('#ffffff');randomcolor('#f7f7f7');randomftcolor('#5C5C5C');">Reset</button><br/>
+		<div class="btn-group" role="group" aria-label="...">
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#222277');randomcolor('#99CC29');randomftcolor('#000000');">Old Design</button>
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#ffffff');randomcolor('#000000');randomftcolor('#808080');">Dark</button>
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#ffffff');randomcolor('#efef10');randomftcolor('#242424');">Yellow</button>
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#ffffff');randomcolor('#ffb822');randomftcolor('#234323');">Orange</button>
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#ffffff');randomcolor('#00dd00');randomftcolor('#202020');">Green</button>
+			<button type="button" class="btn-option btn btn-default" onclick="javascript:randombgcolor('#ffffff');randomcolor('#f7f7f7');randomftcolor('#5C5C5C');">Reset</button>
+		</div>
 		<h3>Change individual colors</h3>
 		<button class="btn-option" onclick="javascript:randomcolor();">Change main color</button>
 			<a class="helpmsg" title="Changes the main color to a random hex value."></a><br/>
@@ -493,6 +495,7 @@
 			<li class="list-group-item">Firefox 48.0.1       , Ubuntu 16.04 LTS</li>
 			<li class="list-group-item">Firefox 49.0         , Ubuntu 16.04 LTS</li>
 			<li class="list-group-item">Firefox 49.0         , Ubuntu 16.10</li>
+			<li class="list-group-item">Firefox 49.0.2       , Ubuntu 16.10</li>
 		</ul>
 		<h3>Not working Browsers:</h3>
 		<ul class="list-group">
@@ -512,6 +515,10 @@
 			<li class="list-group-item">Firefox 49.0  , Lubuntu 16.10</li>
 			<li class="list-group-item">Firefox 49.0  , Xubuntu 16.10</li>
 			<li class="list-group-item">Firefox 49.0  , Windows 10</li>
+			<li class="list-group-item">Firefox 49.0.2, Kubuntu 16.10</li>
+			<li class="list-group-item">Firefox 49.0.2, Lubuntu 16.10</li>
+			<li class="list-group-item">Firefox 49.0.2, Xubuntu 16.10</li>
+			<li class="list-group-item">Firefox 49.0.2, Windows 10</li>
 		</ul>
 	  </div>
 	<div id="menu9" class="tab-pane fade">

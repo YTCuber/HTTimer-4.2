@@ -829,9 +829,10 @@ ziel={
 		show('ziele');
 	},
 	format:function(ziel,current){
-		var color;
+		var color,percentage;
 		(ziel/current>1)?color="green":color="red";
-		return "<span style='background-color:"+color+"'>"+Math.round(ziel/current*100)+"% ("+language.goal+": "+ziel+" "+language.seconds+")</span>";
+		percentage=Math.round(ziel/current*100);
+		return '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="'+percentage+'" aria-valuemin="0" aria-valuemax="100" style="width:'+percentage+'%;">'+percentage+'% of '+ziel+' '+language.seconds+'</div></div>';
 	},
 	vergleich:function(){
 		var globalAverage,best,bestao5,bestao12,bestao50,bestocustom,currentValues,text,maxtime,currentValues,startvalues,currentValue,i,j;
@@ -880,12 +881,11 @@ algsets={
 				text+=(j+1)+".: "+algsets.formatAlg(algsets.sets[i][j])+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.turnAlg(algsets.sets["+i+"]["+j+"]);algsets.display();'>Invert</button><button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorM(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror M</button><button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorS(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror S</button><button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.simplify(algsets.sets["+i+"]["+j+"]);algsets.display();'>Simplify</button><button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.viewExecution(algsets.sets["+i+"]["+j+"]);'>View Execution</button><button onclick='javascript:algsets.edit("+i+","+j+");'>Edit</button>"+BR;
 			}
 		}*/
-		text="";
 		text="<h2>Algorithms</h2>";
 		text+="Number of Sets: "+algsets.sets.length+"."+BR+"<img onclick='javascript:algsets.addSet()' src='icon/icon_+.png' alt='+'/>"+BR;
 		
 		for(i=0;i<algsets.sets.length;++i){
-			text+=algsets.setnames[i]+":<img onclick='javascript:algsets.addAlg("+i+")' src='icon/icon_+.png' alt='+'/>"+BR;
+			text+='<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+algsets.setnames[i]+":<img onclick='javascript:algsets.addAlg("+i+")' src='icon/icon_+.png' alt='+'/></h3></div><div class='panel-body'>";
 			for(j=0;j<algsets.sets[i].length;++j){
 				cstate=(function(alg,undefined){
 					var cube,a,b;
@@ -901,14 +901,15 @@ algsets={
 					return b;
 				}(algsets.invert(algsets.sets[i][j])));
 				text+="<div class='case'>"+algsets.sets[i][j]+algsets.cubeimage(cstate)
-				+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.turnAlg(algsets.sets["+i+"]["+j+"]);algsets.display();'>Invert</button>"
-				+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorM(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror M</button>"
-				+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorS(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror S</button>"
-				+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.simplify(algsets.sets["+i+"]["+j+"]);algsets.display();'>Simplify</button>"
-				+"<button onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.viewExecution(algsets.sets["+i+"]["+j+"]);'>View Execution</button>"
-				+"<button onclick='javascript:algsets.edit("+i+","+j+");'>Edit</button></div>";
-
+				+"<div class='btn-group' role='group'>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.turnAlg(algsets.sets["+i+"]["+j+"]);algsets.display();'>Invert</button>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorM(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror M</button>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.mirrorS(algsets.sets["+i+"]["+j+"]);algsets.display();'>Mirror S</button>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.simplify(algsets.sets["+i+"]["+j+"]);algsets.display();'>Simplify</button>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.sets["+i+"]["+j+"]=algsets.viewExecution(algsets.sets["+i+"]["+j+"]);'>View Execution</button>"
+				+"<button type='button' class='btn btn-default' onclick='javascript:algsets.edit("+i+","+j+");'>Edit</button></div></div><hr>";
 			}
+			text+="</div></div>";
 		}
 		text+=BR+"<div onclick='hide(\"algSets\")'>"+language.back+"</div>";
 		document.getElementById("algSets").innerHTML=text;

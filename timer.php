@@ -10,7 +10,7 @@ You are not permitted to use any part of the code you are currently watching.
 		<link rel="stylesheet" type="text/css" href="css/timercss.css"            media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/cubing-icons.css"        media="all"    />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"       media="all"    />
-		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" media="all"    />
+		<!--<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" media="all"    />-->
 		<script src="js/mathlib.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
