@@ -1,11 +1,9 @@
 ﻿window.modules.timer=true;
 
-var uwrs,colors,uwrholders,cube,rshtml,rohtml,remainingInspectionTime;
+var uwrs,colors,uwrholders,cube,remainingInspectionTime;
 const SCRAMBLEIMAGE="scrambleImage";
 
 remainingInspectionTime=0;
-rshtml='<small><span style="color:red;float:right;" title="Random state"><i>RS</i>&nbsp;</span></small>';
-rohtml='<small><span style="color:red;float:right;" title="Random orientation"><i>RO</i>&nbsp;</span></small>';
 cube=generatealgjscube(alg_jison);
 uwrs=[];
 colors=[];
@@ -35,8 +33,9 @@ colors["A"]="#A0A0A0";
 rotationReducer={
 	keys:[["x y x'","z"],["x' y x","z'"],["y x y'","z'"],["y x' y'","z"]],
 	reduce:function(rots){
+		var i;
 		rots=rots.toLowerCase();
-		for(var i=0;i<rotationReducer.keys.length;++i){
+		for(i=0;i<rotationReducer.keys.length;++i){
 			if(rotationReducer.keys[i][0]==rots){
 				rots=rotationReducer.keys[i][1];
 			}
@@ -61,7 +60,6 @@ String.prototype.replaceAll = function(search,replacement) {
 	return target.replace(new RegExp(search,'g'),replacement);
 };
 var isUndefined=function(x){return (function(a,undefined){return a==undefined;})(x)}
-var isUndefinedFast=function(x){return isUndefined(x)}
 
 var digits = function f(a,b){return"\n_ |"[b%4&&b%2+-~a]||"ცᕦဨဢᒦႂႊᅦႪႦ".charCodeAt(a).toString(2).replace(/./g,f)}
 
@@ -147,17 +145,16 @@ function stop(){
 		while(ziel.ziele.length<timer.sessions.length){
 			ziel.ziele.push([0,0,0,0,0,0]);
 		}
-		var best,bestao5,besto12;
+		var best,bestao5,besto12,i;
 		best=format(timer.config.results[timer.config.results.length-1].zeit),
 		bestao5=format(currentaox(timer.config.results,5)),
 		besto12=format(currentaox(timer.config.results,12));
 		if(typeof ziel.ziele[timer.currentSession]=="undefined")ziel.ziele[timer.currentSession]=[0,0,0,0,0,0];
-		for(var i=0;i<ziel.ziele[timer.currentSession].length;++i){
+		for(i=0;i<ziel.ziele[timer.currentSession].length;++i){
 			if(ziel.ziele[timer.currentSession][i]<0)ziel.ziele[timer.currentSession][i]=0;
 		}
 		document.getElementsByClassName("goal-time")[0].innerHTML="<h4>Current Goals:</h4>Single:"+ziel.format(ziel.ziele[timer.currentSession][0],best)+BR+"Ao5:"+ziel.format(ziel.ziele[timer.currentSession][1],bestao5)+BR+"Ao12:"+ziel.format(ziel.ziele[timer.currentSession][2],besto12);
 	}
-	ziel.check(0,timer.type,zeit)
 	timer.zeit=timer.scramble=timer.penalty=0;
 	displayTimes();
 	drawTool();
@@ -191,6 +188,7 @@ function deletetime(id){
 
 function graphProgression(){
 	var solveData,ctx,data,myLineChart,i,j;
+	
 	solveData=timer.config.results,
 	ctx=document.getElementsByClassName("graph-progression"),
 	data={
@@ -288,13 +286,13 @@ function format(s) {
 
 function displayTimes(){
 	var text,i;
+	
 	text="<table class='table table-striped table-condensed table-hover'><tr><td colspan='3'>Solve Times</td></tr>";
 	for(i=0;i<timer.config.results.length;++i){
 		zeit=timer.config.results[i].zeit,
 		scramble=timer.config.results[i].scramble,
 		penalty=timer.config.results[i].penalty;
-		text+="<tr>"
-		     +"<td>"+(i+1)+".:</td><td onclick='javascript:showTime("+i+");'>";
+		text+="<tr><td>"+(i+1)+".:</td><td onclick='showTime("+i+");'>";
 		if(penalty!=="DNF"){
 			text+=format(zeit);
 			if(penalty==="+2"){
@@ -321,6 +319,7 @@ function displayTimes(){
 
 function showTime(i){
 	var text,zeit,scramble,penalty,datum,kommentar,fake;
+	
 	text="",
 	zeit=timer.config.results[i].zeit,
 	scramble=timer.config.results[i].scramble,
@@ -331,7 +330,8 @@ function showTime(i){
 	kommentar=timer.config.results[i].kommentar;
 	show('timeDetails');
 	function dodate(time){
-		var b=new Date(time);
+		var b;
+		b=new Date(time);
 		return b.getDate()+"."+(b.getMonth()+1)+"."+b.getFullYear()+" "+b.getHours()+":"+b.getMinutes()+":"+b.getSeconds()+"."+b.getMilliseconds();
 	}
 	text+="<h3>Solve information</h3>"+BR+"Zeit: "+zeit+BR+"Formatierte Zeit: "+format(zeit)+BR+"Scramble: "+scramble+BR+"Penalty: "+penalty+BR+"Datum: "+datum+BR+"Formatiertes Datum: "+dodate(datum)+BR+"Kommentar: '"+kommentar+"'"+BR+"Fake: "+fake+BR+BR+"<button onclick='javascript:hide(\"timeDetails\");'>"+language.back+"</button>";
@@ -340,11 +340,16 @@ function showTime(i){
 
 function flagtime(i){
 	var text,flags,j;
-	text="<h3>Set flags for solve</h3>";
+	
+	text="<h3>Set flags for solve #"+i+"</h3>";
 	flags=["Pop","BLD Memo Mistake","BLD Execution mistake","PB","UWR","Fake","Fail","OLL Skip","PLL Skip","LL Skip","CMLL Skip","EO Skip","EOLL Skip","EPLL Skip","COLL Skip","CPLL Skip","EOCPLL Skip","COEPLL Skip","EOLine Skip","Corner twist","Explosion","Parity","Double Parity","Mess up","Parity mess up","Double mess up","Double Parity mess up"];
 	if(!timer.config.results[i].flags)timer.config.results[i].flags=[];
 	for(j=0;j<flags.length;++j){
-		text+="<div class='row'><div class='col-md-1'></div><div class='col-md-5'>"+flags[j]+".: "+(!!timer.config.results[i].flags[j])+"</div><div class='col-md-3'><button class='btn btn-default' onclick='flagset("+i+","+j+",false);'>Set false</button></div><div class='col-md-3'><button class='btn btn-default' onclick='flagset("+i+","+j+",true)';>Set true</button></div></div>";
+		text+="<div class='row'><div class='col-md-1'></div><div class='col-md-5'>";
+		if(!!timer.config.results[i].flags[j])text+="<b>";
+		text+=flags[j]+".: "+(!!timer.config.results[i].flags[j]);
+		if(!!timer.config.results[i].flags[j])text+="</b>";
+		text+="</div><div class='col-md-3'><button class='btn btn-default' onclick='flagset("+i+","+j+",false);'>Set false</button></div><div class='col-md-3'><button class='btn btn-default' onclick='flagset("+i+","+j+",true)';>Set true</button></div></div>";
 	}
 	show('flagtime');
 	document.getElementById("flagtime").innerHTML=text+"<div class='btn btn-default' onclick='hide(\"flagtime\");'>"+language.back+"</div>";
@@ -356,7 +361,7 @@ function flagset(solve,flag,value){
 
 Mousetrap.bind("space",checkKeyAction);
 Mousetrap.bind("ctrl+s",exportCode);
-Mousetrap.bind("a d m i n",function(){window.location.reload()});
+Mousetrap.bind("r e l o a d",function(){window.location.reload()});
 Mousetrap.bind("I",startInspection);
 
 function checkKeyAction(){
@@ -400,10 +405,10 @@ function avg(times){//aox
 }
 
 function average(times){//mox
-	var sum;
+	var sum,i;
 	sum=0;
 
-	for(var i=0;i<times.length;++i){
+	for(i=0;i<times.length;++i){
 		sum+=times[i].zeit;	
 	}
 
@@ -411,11 +416,11 @@ function average(times){//mox
 }
 
 function minMaxTime(times){
-	var min,minindex,max,maxindex;
+	var min,minindex,max,maxindex,j;
 	min=+Infinity;
 	max=-Infinity;
 	
-	for(var j=0;j<times.length;++j){
+	for(j=0;j<times.length;++j){
 		if(times[j].zeit<min){
 			min=times[j].zeit;
 			minindex=j;
@@ -429,6 +434,8 @@ function minMaxTime(times){
 }
 
 function bestaox(times,x){
+	var arr,min,minavg,i,j;
+	
 	if(times.length<x){
 		return "DNF";
 	}
@@ -436,13 +443,12 @@ function bestaox(times,x){
 		return Math.round(avg(times));
 	}
 
-	var arr,min,minavg;
 	arr=[];
 	min=+Infinity;
 	
-	for(var i=0;i<times.length-x;++i){
+	for(i=0;i<times.length-x;++i){
 		arr=[];
-		for(var j=0;j<x;++j){
+		for(j=0;j<x;++j){
 			arr.push(times[i+j]);
 		}
 		minavg=avg(arr);
@@ -453,19 +459,19 @@ function bestaox(times,x){
 	return Math.round(min);
 }
 function currentaox(times,x){
+	var arr,minavg,i,j;
+	
 	if(times.length<x){
 		return "DNF";
 	}
 	if(times.length==x){
 		return Math.round(avg(times));
 	}
-
-	var arr,minavg,i;
-	arr=[];
 	
+	arr=[];
 	i=times.length-x;
 	arr=[];
-	for(var j=0;j<x;++j){
+	for(j=0;j<x;++j){
 		arr.push(times[i+j]);
 	}
 	minavg=avg(arr);
@@ -474,7 +480,7 @@ function currentaox(times,x){
 }
 
 function toolTimes(){
-	var globalAVerage,best,worst,bestao5,uwr,fake,p;
+	var globalAverage,best,worst,bestao5,uwr,fake,p;
 	globalAverage=format(Math.floor(average(timer.config.results))),
 	best=format(minMaxTime(timer.config.results).min),
 	worst=format(minMaxTime(timer.config.results).max),
@@ -491,7 +497,6 @@ function toolTimes(){
 		p+=" <b>FAKED UWR! :(</b>";
 	}
 	p+=BR+language.worst+": "+worst+BR+language.best+" Ao5: "+bestao5+"";
-	ziel.check(1,timer.type,bestao5);
 	if(timer.config.results.length>11){
 		p+=BR+language.best+" Ao12: "+format(bestaox(timer.config.results,12));
 		if(timer.config.results.length>49){
@@ -531,19 +536,21 @@ function toolTimeRatio(){
 }
 
 function toolTimeHistory(){
-	document.getElementById("summ").innerHTML="<canvas id='pbcanvas' width='200' height='150'></canvas>";
-	var canvas = document.getElementById('pbcanvas'),
+	var canvas,ctx,height,width,times,min,j,max,time;
+	canvas = document.getElementById('pbcanvas'),
 	ctx = canvas.getContext('2d'),
 	height=150,
 	width=200;
+	times=JSON.parse(JSON.stringify(timer.config.results));
+	min=0;
+	max=minMaxTime(timer.config.results).max;
+	
 	ctx.moveTo(0,height-1);
 	ctx.lineTo(width,height-1);
 	ctx.stroke();
 	ctx.font = "10px Arial";
-	
-	times=JSON.parse(JSON.stringify(timer.config.results));
-	var min=0,j,max=minMaxTime(timer.config.results).max,time;
-	for(var j=0;j<times.length;++j){
+	document.getElementById("summ").innerHTML="<canvas id='pbcanvas' width='200' height='150'></canvas>";
+	for(j=0;j<times.length;++j){
 		time=times[j].zeit;
 		ctx.moveTo((j/times.length)*width,height+min-1);
 		ctx.lineTo((j/times.length)*width,height-((time/max)*height)+1);
@@ -561,10 +568,9 @@ function drawTool(){
 	
 	(best<uwrs[timer.type])?uwr=true:uwr=false;
 	(best<0.3)?fake=true:fake=false;
-	p="<table class='table table-condensed table-hover'><tr><td>Type</td><td>Current</td><td>Best</td></tr><tr><td colspan='3'><hr/></td></tr><tr><td>Session Mo"+timer.config.results.length+"</td><td>--</td><td>"+ globalAverage+"</td></tr>";
+	p="<table class='table table-condensed table-hover'><tr><td>Type</td><td>Current</td><td>Best</td></tr><tr></tr><tr><td>Session Mo"+timer.config.results.length+"</td><td>--</td><td>"+ globalAverage+"</td></tr>";
 	p+="<tr><td>Single</td><td>"+bestcurrent+"</td><td>"+best+"</td></tr>";
 	p+="<tr><td>Ao5</td><td>"+format(currentaox(timer.config.results,5))+"</td><td>"+bestao5+"</td></tr>";
-	ziel.check(1,timer.type,bestao5);
 	if(timer.config.results.length>11){
 		p+="<tr><td>Ao12</td><td>"+format(currentaox(timer.config.results,12))+"</td><td>"+format(bestaox(timer.config.results,12))+"</td></tr>";
 		if(timer.config.results.length>49){
@@ -679,9 +685,10 @@ function createSession(){
 }
 
 function displaySessions(){
-	var text;
+	var text,i;
 	text="<select>";
-	for(var i=0;i<timer.sessions.length;++i){
+	
+	for(i=0;i<timer.sessions.length;++i){
 		text+="<option onclick='javascript:switchSession("+i+")'>Session "+(i+1)+"</option>";
 	}
 	text+="<option onclick='javascript:createSession();'>Add Session</option>";
@@ -695,18 +702,23 @@ function switchScrambler(typ){
 }
 
 function addCustomScrambler(){
-	var name=prompt("Scramblername");
+	var name,moves,anzahl;
+	name=prompt("Scramblername");
+	
 	do{
-		var moves=prompt("Possible moves, commaseperated");
+		moves=prompt("Possible moves, commaseperated");
 	}while(!confirm("Correct moves? "+moves)||moves.split(",").length<2);
-	var anzahl=prompt("Number of moves");
+	
+	anzahl=prompt("Number of moves");
 	customscrambler.push({anzahl:anzahl,name:name,moves:moves.split(",")});
 	displayCustomScrambler();
 }
 
 function displayCustomScrambler(){
-	var text="";
-	for(var i=0;i<customscrambler.length;++i){
+	var text,i
+	text="";
+	
+	for(i=0;i<customscrambler.length;++i){
 		text+="<div onclick='timer.type=\"cus"+i+"\"'>"+customscrambler[i].name+": "+customscrambler[i].anzahl+" moves of "+customscrambler[i].moves.join(", ")+"</div>";	
 	}
 	$("#customScrambler").html(text);
@@ -714,7 +726,6 @@ function displayCustomScrambler(){
 
 function generateExport(){
 	var globalAverage,best,worst,bestao5,exportDesign,p,d,i;
-	
 	globalAverage=format(average(timer.config.results)),
 	best=format(minMaxTime(timer.config.results).min),
 	worst=format(minMaxTime(timer.config.results).max),
@@ -773,6 +784,7 @@ function hideExportCode(){
 function importCode(){
 	var a,b;
 	a=timer.version||false;
+	
 	eval(prompt(language.entercode));
 	displayTimes();
 	displaySessions();
@@ -787,13 +799,13 @@ ziel={
 	done:[],
 	doneAvg:[],
 	display:function(){
-		var text;
+		var globalAverage,best,bestao5,besto12,bestao50,bestocustom,worst,text,i;
+		
 		while(ziel.ziele.length<timer.sessions.length){
 			ziel.ziele.push([0,0,0,0,0,0]);
 		}
+		
 		text="<h2>"+language.goals+"</h2>";
-		show('ziele');
-		var
 		globalAverage=format(average(timer.config.results)),
 		best=format(minMaxTime(timer.config.results).min),
 		worst=format(minMaxTime(timer.config.results).max),
@@ -802,7 +814,7 @@ ziel={
 		bestao50=format(bestaox(timer.config.results,50)),
 		bestocustom=format(bestaox(timer.config.results,timer.customAvg));
 		if(typeof ziel.ziele[timer.currentSession]=="undefined")ziel.ziele[timer.currentSession]=[0,0,0,0,0,0];
-		for(var i=0;i<ziel.ziele[timer.currentSession].length;++i){
+		for(i=0;i<ziel.ziele[timer.currentSession].length;++i){
 			if(ziel.ziele[timer.currentSession][i]<0)ziel.ziele[timer.currentSession][i]=0;
 		}
 		text+="<table style='color:black;'><tr><td>Type</td><td>Goal</td><td>Set</td></tr>"
@@ -813,21 +825,19 @@ ziel={
 		+"<tr><td>Custom Aox</td><td>"+ziel.format(ziel.ziele[timer.currentSession][4],bestocustom)+"</td><td><button onclick='ziel.ziele[timer.currentSession][4]=prompt(\"Type in new goal.\");ziel.display();'>Set</button></td></tr>";
 		text+="</table>"+BR+"<div onclick='hide(\"ziele\")'>"+language.back+"</div>";
 		document.getElementById("ziele").innerHTML=text;
+		
+		show('ziele');
 	},
 	format:function(ziel,current){
 		var color;
 		(ziel/current>1)?color="green":color="red";
 		return "<span style='background-color:"+color+"'>"+Math.round(ziel/current*100)+"% ("+language.goal+": "+ziel+" "+language.seconds+")</span>";
 	},
-	check:function(singleAverage,event,time){
-		var times=timer.config.results;
-	},
 	vergleich:function(){
-		var
+		var globalAverage,best,bestao5,bestao12,bestao50,bestocustom,currentValues,text,maxtime,currentValues,startvalues,currentValue,i,j;
 		globalAverage=format(average(timer.config.results)),
 		best=minMaxTime(timer.config.results).min,
-		bestao5=bestaox(timer.config.results,5)
-		bestao12=bestaox(timer.config.results,12),
+		bestao5=bestaox(timer.config.results,5),
 		bestao12=bestaox(timer.config.results,12),
 		bestao50=bestaox(timer.config.results,50),
 		bestocustom=bestaox(timer.config.results,timer.customAvg),
@@ -836,10 +846,11 @@ ziel={
 		maxtime=minMaxTime(timer.config.results).min*1.1;
 		startvalues=[maxtime,maxtime*1.1,maxtime*1.2*1.1,maxtime*1.3*1.2*1.1,maxtime*1.4*1.3*1.2*1.1,maxtime*1.4*1.3*1.2*1.1*1.5],
 		currentValue=0;
-		for(var j=0;j<5;++j){
+		
+		for(j=0;j<5;++j){
 			text+="<tr>";
 			currentValue=startvalues[j];
-			for(var i=0;i<20;++i){
+			for(i=0;i<20;++i){
 				text+="<td>";
 				for(var k=0;k<i;k++)currentValue*=.97;
 				if(currentValue>currentValues[j])text+="<span style='background-color:green'>"+Math.round(currentValue)/1e3+"</span></td>";
@@ -858,7 +869,7 @@ algsets={
 	//registeredSets:{"PLL":["x (R' U R') D2 (R U' R') D2 R2","x' (R U' R) D2 (R' U R) D2 R2","R U' R U R U R U' R' U' R2","R2 U R U R' U' (R' U')(R' U R')","M2 U M2 U2 M2 U M2","R U R' U' R' F R2 U' R' U' R U R' F'","R U R' F' R U R' U' R' F R2 U' R' U'","F R U' R' U' R U R' F' R U R' U' R' F R F'","R' U2 R U2 R' F R U R' U' R' F' R2 U'","L U2' L' U2' L F' L' U' L U L F L2' U","R' U R' d' R' F' R2 U' R' U R' F R F","R' U2 R' d' R' F' R2 U' R' U R' F R U' F","R U R' y' R2 u' R U' R' U R' u R2","R' U' R y R2 u R' U R U' R u' R2","R2 u' R U' R U R' u R2 y R U' R'","R2 u R' U R' U' R u' R2 y' R' U R","M2 U M2 U M' U2 M2 U2 M' U2","R' U L' U2 R U' R' U2 R L U'","x' (R U' R') D (R U R') D' (R U R') D (R U' R') D'","(R' U L') U2 (R U' L)(R' U L') U2 (R U' L) U'","(L U' R) U2 (L' U R')(L U' R) U2 (L' U R') U"]},
 	registeredSets:{},
 	display:function(){
-		var text,cstate;
+		var text,cstate,i,j;
 		show('algSets');
 		/*
 		text="<h2>Algorithmen</h2>";
@@ -873,9 +884,9 @@ algsets={
 		text="<h2>Algorithms</h2>";
 		text+="Number of Sets: "+algsets.sets.length+"."+BR+"<img onclick='javascript:algsets.addSet()' src='icon/icon_+.png' alt='+'/>"+BR;
 		
-		for(var i=0;i<algsets.sets.length;++i){
+		for(i=0;i<algsets.sets.length;++i){
 			text+=algsets.setnames[i]+":<img onclick='javascript:algsets.addAlg("+i+")' src='icon/icon_+.png' alt='+'/>"+BR;
-			for(var j=0;j<algsets.sets[i].length;++j){
+			for(j=0;j<algsets.sets[i].length;++j){
 				cstate=(function(alg,undefined){
 					var cube,a,b;
 					cube=new Cube();
@@ -903,11 +914,11 @@ algsets={
 		document.getElementById("algSets").innerHTML=text;
 	},
 	invert:function(){
-		var alg,out;
+		var alg,out,i;
 		alg=arguments[0].split(" ");
 		out=[];
 		
-		for(var i=0;i<alg.length;++i){
+		for(i=0;i<alg.length;++i){
 			if(alg[i].length===0)break;
 			if(alg[i].length===1)out.push(alg[i]+"'");
 			if(alg[i].length===2){
@@ -919,10 +930,10 @@ algsets={
 		return out.reverse().join(" ");
 	},
 	cubeimage:function (state){
-		var text,color;
+		var text,color,i,j;
 		text="<div class='cube'>";
-		for(var i=0;i<state.length;++i){
-			for(var j=0;j<state[i].length;++j){
+		for(i=0;i<state.length;++i){
+			for(j=0;j<state[i].length;++j){
 				color=algsets.stickerColors[state[i][j]]||"white";
 				text+="<div class='sticker "+color+"'>&nbsp;</div>";
 			}
@@ -986,9 +997,10 @@ var relayNumbers;
 relayNumbers=[];
 
 function displayRelayOption(){
-	var text;
+	var text,i;
 	text="<button onclick='relayNumbers[1]=relayNumbers[5]=relayNumbers[16]=1;displayRelayOption();'>2x2-4x4</button>"+BR+"<button onclick='relayNumbers[1]=relayNumbers[5]=relayNumbers[16]=relayNumbers[17]=1;displayRelayOption();'>2x2-5x5</button>"+BR+BR;
-	for(var i=0;i<timer.scrambleTypes.length;++i){
+	
+	for(i=0;i<timer.scrambleTypes.length;++i){
 		if(typeof relayNumbers[i]==="undefined")relayNumbers[i]=0;
 		text+=(i+1)+".: "+timer.scrambleNames[i]+"&nbsp;";
 		if(relayNumbers[i]<1<<8){
@@ -1006,16 +1018,20 @@ function displayRelayOption(){
 }
 
 function generateRelayCode(){
+	var i,j;
 	timer.relayCommand="";
-	for(var i=0;i<relayNumbers.length;++i){
+	for(i=0;i<relayNumbers.length;++i){
 		if(relayNumbers[i]>0){
-			for(var j=0;j<relayNumbers[i];++j){
+			for(j=0;j<relayNumbers[i];++j){
 				timer.relayCommand+=timer.scrambleTypes[i]+" ";
 			}
 		}
 	}
 }
 
+/* importCstimer
+ * function currently not working
+ */
 function importCstimer(code){
 	timer={
 		running:false,
@@ -1089,7 +1105,8 @@ musik={
 			document.getElementById("musik2").innerHTML+='<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+id+'?autoplay=1&fs=0&disablekb=1&loop=1&autohide=0&list='+list+'" frameborder="0"/>';
 		},
 		display:function(){
-			for(var i=0;i<musik.youtube.idlist.length;++i){
+			var i;
+			for(i=0;i<musik.youtube.idlist.length;++i){
 				document.getElementById("youtubeonevideoload").innerHTML+='<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+musik.youtube.idlist[i]+'?autoplay=1&fs=0&disablekb=1&loop=1&autohide=0" frameborder="0"/>';
 			}
 		}
@@ -1098,14 +1115,18 @@ musik={
 
 function takeabreak(){
 	var time;
-	show('takeabreak');
-	time=prompt("How long? (milliseconds)");
-	setTimeout("hide('takeabreak');",time);
-	document.getElementById("takeabreak").innerHTML="<h1>Taking a break right now!</h1>"+BR+"For "+time+" seconds.";
+	time=prompt("How long? (milliseconds)",60000);
+	
+	if(time>500){
+		show('takeabreak');
+		setTimeout("hide('takeabreak');",time);
+		document.getElementById("takeabreak").innerHTML="<h1>Taking a break right now!</h1>"+BR+"For "+time+" seconds.";
+	}
 }
 
 function codeeditor(){
-	var code=$("#code-editor").val();
+	var code;
+	code=$("#code-editor").val();
 	code=code.replace(/SCRAMBLE/,"<span class='scramble-unstyled'>R U R' U'</span>");
 	code=code.replace(/TIME/,"<span class='time-unstyled'>0.000</span>");
 	code=code.replace(/TIMES/,"<span class='times-unstyled'></span>");
@@ -1119,7 +1140,7 @@ function codeeditor(){
 
 function loadCode(timer){
 	var code;
-	if(timer=="qqtimer"){
+	if(timer=="qqtimer"){//Needs cleanup
 		code='<table border="1" cellpadding="5" cellspacing="0" width="100%"> <tbody><tr> <td colspan="3" id="menu" bgcolor="#00ff00"> <table cellpadding="2" cellspacing="0" width="100%"> <tbody><tr> <td> <font face="Arial" size="3">Scramble type:</font> <select id="optbox" size="1" onchange="rescramble(true);"><option onclick="show(\'scrambler\');">Select scrambler</option></select> </td><td> <font face="Arial" size="3">Scramble length:</font> <input value="25" id="leng" size="3" maxlength="3" onchange="rescramble3();"> </td><td><font face="Arial" size="3">Session:</font> <select id="sessbox" size="1" onchange="getSession(); loadList(); getStats(true);"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option></select> <td><a href="http://mzrg.com/qqtimer/megadoc.html" target="_blank" style="color: black;" class="a">Help!</a></td></tr></tbody></table> </td></tr><tr> <td colspan="3"> <span id="scramble" style="font-size: 16px;">SCRAMBLE</span><span id="getlast" onclick="getlastscramble()" class="a">NEXT</span> <span id="debug"></span> </td></tr><tr> <td align="center"> <span id="showOpt" onclick="toggleOptions()" class="a">show</span> timer options<br><span id="theTime" style="font-family: sans-serif; font-weight: bold; font-size: 2em; ">TIME</span><br>that time was: <span onclick="changeNotes(0);" class="a">no penalty</span> <span onclick="changeNotes(2);" class="a">+2</span> <span onclick="changeNotes(1);" class="a">DNF</span> | <span onclick="comment();" class="a">leave comment</span> </td><td style="width: 15em;"> <div id="theList" style="overflow-y: scroll; height: 16em;">TIMES</div></td><td style="width: 15em;"> <div id="stats" style="overflow-y: scroll; height: 16em;">SESSIONAVG</div></td></tr><tr id="options" style="display: none;"><td colspan="3"> <table width="100%"><tbody><tr><td align="left"> timer updating is <span id="toggler" onclick="toggleTimer()" class="a">on</span><br>timer precision is <span id="millisec" onclick="toggleMilli()" class="a">1/100 sec</span><br>bld mode is <span id="bldmode" onclick="toggleBld()" class="a">off</span><br>entering in times with <span id="inputTimes" onclick="toggleInput()" class="a">timer</span><br><span onclick="increaseSize()" class="a">increase</span>/<span onclick="decreaseSize()" class="a">decrease</span> timer size<br><span onclick="increaseScrambleSize()" class="a">increase</span>/<span onclick="decreaseScrambleSize()" class="a">decrease</span> scramble size<br>using <span id="inspec" onclick="toggleInspection()" class="a">no</span> inspection<br><span id="avgn" onclick="toggleAvgN()" class="a">not using</span> average of <input id="avglen" value="50" size="4" maxlength="4" onchange="changeAvgN()">&nbsp;<br><span id="mon" onclick="toggleMoN()" class="a">not using</span> mean of <input id="molen" value="3" size="4" maxlength="4" onchange="changeMoN()">&nbsp;<br>style: <span onclick="setCookie(&#39;style&#39;,0);window.location.reload();" class="a">Gottlieb</span> | <span onclick="setCookie(&#39;style&#39;,1);window.location.reload();" class="a">Tamanas</span> </td><td align="right"> > * monospace scrambles are <span id="monospace" onclick="toggleMono()" class="a">off</span><br>top bar color: #<input id="tcol" value="00ff00" size="6" maxlength="6" onchange="changeColor()"><br>background color: #<input id="bcol" value="white" size="6" maxlength="6" onchange="changeColor()"><br>text color: #<input id="fcol" value="black" size="6" maxlength="6" onchange="changeColor()"><br>link color: #<input id="lcol" value="blue" size="6" maxlength="6" onchange="changeColor()"><br>highlight color: #<input id="hcol" value="yellow" size="6" maxlength="6" onchange="changeColor()"><br>memorization colour: #<input id="memcol" value="green" size="6" maxlength="6" onchange="changeColor()"><br><span class="a" onclick="resetColors()">reset</span> colors to default<br><span class="a" onclick="toggleNightMode()">toggle</span> night mode<br></td></tr></tbody></table> </td></tr><tr id="avgdata" style="display: none; "> </tr><tr id="import" style="display: none;"> <td style="border: medium none ;"> <textarea cols="50" rows="10" id="importedTimes"></textarea> <div onclick="importCode();" class="a">import</div></td></tr></tbody></table> </div><div id="footer">&nbsp;</div><style>#movable{color:black !important;}';
 		$("#code-editor").val(code);
 	}else if(timer=="httimer"){
@@ -1138,22 +1159,3 @@ function show(id){
 function hide(id){
 	document.getElementById(id).style.visibility="hidden";
 }
-/*
-{var mozilla=document.getElementById&&!document.all,ie=document.all,contextisvisible=0;function iebody(){return document.compatMode&&"BackCompat"!=document.compatMode?document.documentElement:document.body}
-function displaymenu(a){el=document.getElementById("context_menu");contextisvisible=1;if(mozilla)return el.style.left=pageXOffset+a.clientX+"px",el.style.top=pageYOffset+a.clientY+"px",el.style.visibility="visible",a.preventDefault(),!1;if(ie)return el.style.left=iebody().scrollLeft+event.clientX,el.style.top=iebody().scrollTop+event.clientY,el.style.visibility="visible",!1}function hidemenu(){"undefined"!=typeof el&&contextisvisible&&(el.style.visibility="hidden",contextisvisible=0)}
-mozilla?(document.addEventListener("contextmenu",displaymenu,!0),document.addEventListener("click",hidemenu,!0)):ie&&(document.attachEvent("oncontextmenu",displaymenu),document.attachEvent("onclick",hidemenu));}
-*/
-(function(){
-	var a=console;
-	Object.defineProperty(window,"console",{
-		get:function(){
-			if (a._commandLineAPI) {
-				throw "Sorry, Can't execute scripts!";
-			}
-			return a;
-		},
-		set:function(b){
-			a=b;
-		}
-	});
-})();

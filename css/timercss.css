@@ -241,21 +241,22 @@ h3 {
         overflow: hidden;
     }
     .menulogo {
-        width: 20%;
-        float: left;
-        height: 99%;
+		position:absolute;
+		left:0;
+		top:0px;
+		width:300px;
         line-height: 70px;
         text-align: center;
         font-size: 2.5em;
         cursor: pointer;
+		z-index:1;
     }
     .menulogo:hover {
         color: #563d7c;
     }
     .scramble {
-        top: 65px;
-        left: 380px;
-        right: 380px;
+        left: 350px;
+        right: 400px;
         font-size: 2em;
         position: relative;
     }
@@ -285,8 +286,7 @@ h3 {
         text-align: center;
         font-size: 2em;
         cursor: pointer;
-        right: 300px;
-        top: 65px;
+        right: 50px;
     }
     .next:hover {
         /*color:#0fddaf;*/
@@ -295,7 +295,7 @@ h3 {
     }
     .option {
         display: none;
-        top: 70px;
+        top: 5px;
     }
     table {
         width: 100%;
@@ -331,14 +331,14 @@ h3 {
         z-index: 5;
     }
     .sessions {
-        top: 145px;
+        top: 110px;
 		width:300px;
     }
     .times {
         text-align: center;
         font-size: 1.1em;
         position: absolute;
-        top: 350px;
+        top: 270px;
         left: 0;
         bottom: 5px;
         width: 300px;
@@ -357,15 +357,15 @@ h3 {
     }
 	.horizontal-line{
 		width:100%;
-		top:65px;
-		height:80px;
+		top:0px;
+		height:70px;
 		position:absolute;
 		background-color:#f7f7f7;
 		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	}
 	.vertical-line{
 		position:absolute;
-		top:145px;
+		top:70px;
 		bottom:0;
 		left:0;
 		width:305px;

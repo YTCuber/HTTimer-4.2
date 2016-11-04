@@ -1,20 +1,21 @@
 window.modules.scrambler=true;
 scramblers['333'].initialize(null, Math);//For LL-Scrambler
 const BR="<br/>";
+var customscrambler;
+customscrambler=[];
 
 function generateScramble(r,a){var e,n,t,o="",f="",h=[];for(h.U="D",h.D="U",h.L="R",h.R="L",h.F="B",h.B="F",t=0;a>t;t++)e=o,o=r[Math.floor(Math.random()*r.length)],e==o||e[0]==o[0]||h[e[0]]==o[0]?t--:n=o,f+=n+" ",n="";return f;}
 
 function relayScramble(command){
-	var out,cmd;
+	var out,cmd,i;
 	out="";
 	cmd=command.split(" ");
-	for(var i=0;i<cmd.length;i++){
+	
+	for(i=0;i<cmd.length;i++){
 		if(cmd[i]!=="relay")out+=getScrambles(cmd[i],0)+BR;
 	}
 	return out;
 }
-
-var customscrambler=[];
 
 function getScrambles(type,relay){
 	var scramble="",
@@ -56,7 +57,8 @@ function getScrambles(type,relay){
 	skewb="U R B L U' R' B' L'".split(" "),
 	barrelstage1="R R' R2 L L' L2 F F' F2 B B' B2".split(" "),
 	zweizweieins=["R2","U2","R2 U2","U2 R2","R2 U2 R2"],
-	gearcube=["R2","U2","F2","B2","L2","D2"];
+	gearcube=["R2","U2","F2","B2","L2","D2"],
+	i;
 
 	scramble+=generateScramble(state1,3);
 	scramble+=generateScramble(state2,5);
@@ -145,7 +147,7 @@ function getScrambles(type,relay){
 	scrambler["square-2"]=generateScramble(squan,34);
 	scrambler["square-1"]=genScrambleSq1(42);
 	scrambler["skewb"]=generateScramble(skewb,12);
-	scrambler["clock"]="Scrambler type is not available yet.";
+	scrambler["clock"]="Scrambler type is not available yet, and will never be.";
 	scrambler["2x2x1"]=generateScramble(zweizweieins,1);
 	scrambler["gear"]=generateScramble(gearcube,7),
 	scrambler["halfturn"]=generateScramble(gearcube,13);
@@ -158,7 +160,7 @@ function getScrambles(type,relay){
 	scrambler["3x3zzls"]=scramblers["333"].getZZLSScramble();
 	scrambler["1x1x2"]=generateScramble(["R","R2","R'"],1);
 	
-	for(var i=0;i<scrambler.length;++i)scrambler[i]=cube.cube.simplify(scrambler[i])||scrambler[i];
+	for(i=0;i<scrambler.length;++i)scrambler[i]=cube.cube.simplify(scrambler[i])||scrambler[i];
 	
 	if(!!~(relay-1)){
 		scrambler["relay"]=relayScramble(timer.relayCommand);
@@ -166,7 +168,7 @@ function getScrambles(type,relay){
 	/*if(type=="2x2")return newScramble(puzzles["222"]);
 	else if(type=="3x3")return newScramble(puzzles["333"]);*/
 	if(type[0]=="c"&&type[1]=="u"&&type[2]=="s"){
-		var i=+type.split("cus")[1];
+		i=+type.split("cus")[1];
 		return generateScramble(customscrambler[i].moves,customscrambler[i].anzahl);
 	}
 	return scrambler[type];

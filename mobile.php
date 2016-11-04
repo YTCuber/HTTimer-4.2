@@ -11,6 +11,7 @@ You are not permitted to use any part of the code you are currently watching.
 		<link rel="stylesheet" type="text/css" href="css/cubing-icons.css"        media="all"    />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"       media="all"    />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" media="all"    />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"/>
 		<script src="js/mathlib.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/metronome.js"></script>
@@ -29,6 +30,7 @@ You are not permitted to use any part of the code you are currently watching.
 		<script src="js/scrambler/333.js"></script>
 		<script src="js/scrambler/222.js"></script>
 		<script src="js/hutitimer.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 		<meta name="viewport"           content="width=device-width,initial-scale=1.0"/>
 		<meta name="description"        content="HTTimer:the best cubing timer!"      />
 		<meta name="keywords"           content="httimer,httimer mobile,timer,cube timer,rubiks timer,multi stage timer,multistage timer,rubik's timer,rubik's cube timer,rubiks cube timer,rubix cube timer,javascript timer,rubiks,rubix,multi-stage,multistage, multi-step,multistep,breakdown, breakdowns"/>
@@ -129,162 +131,6 @@ You are not permitted to use any part of the code you are currently watching.
         	<audio id="beepOne" src="http://deejdesigns.com/experiment/metronome/sound/beep-7.wav" preload="auto" controls="controls">Get a better standards compliant browser!</audio>
         	<audio id="beepTwo" src="http://deejdesigns.com/experiment/metronome/sound/beep-8.wav" preload="auto" controls="controls">Get a better standards compliant browser!</audio>
     	</div>
-		
-		<div class="options" id="flagtime"    style="visibility:hidden;"></div>
-		<div class="options" id="timeDetails" style="visibility:hidden;"></div>
-		<div class="options" id="export"      style="visibility:hidden;"></div>
-		<div class="options" id="export"      style="visibility:hidden;"></div>
-		<div class="options" id="relays"      style="visibility:hidden;"><div class="next"></div></div>
-		<div class="options" id="ziele"       style="visibility:hidden;"></div>
-		<div class="options" id="algSets"     style="visibility:hidden;"></div>
-		<div class="options" id="scrambler" style="visibility:hidden;">
-			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#scrambler1">WCA</a></li>
-				<li><a data-toggle="tab" href="#scrambler2">Non-WCA</a></li>
-				<li><a data-toggle="tab" href="#scrambler3">Custom</a></li>
-				<li><a onclick="javascript:hide('scrambler');hide('scrambler-sonstige');">back</a></li>
-			</ul>
-
-			<div class="tab-content">
-				<div id="scrambler1" class="tab-pane fade in active">
-					<div class="icons">
-						<ul class="icons-list">
-						 <li id="event-222" onclick="switchScrambler('2x2');">
-						  <span class="cubing-icon event-222"></span>
-						  <span>2x2x2</span>
-						 </li>
-						 <li id="event-333" onclick="switchScrambler('3x3');">
-						  <span class="cubing-icon event-333"></span>
-						  <span>3x3x3</span>
-						 </li>
-						 <li id="event-333bf" onclick="switchScrambler('3x3bld');">
-						  <span class="cubing-icon event-333bf"></span>
-						  <span>3x3x3 Blind</span>
-						 </li>
-						 <li id="event-333fm" onclick="switchScrambler('FMC');">
-						  <span class="cubing-icon event-333fm"></span>
-						  <span>3x3x3&nbsp;Fewest&nbsp;Moves</span>
-						 </li>
-						 <li id="event-444" onclick="switchScrambler('4x4');">
-						  <span class="cubing-icon event-444"></span>
-						  <span>4x4x4</span>
-						 </li>
-						 <li id="event-444bf" onclick="switchScrambler('5x5bld');">
-						  <span class="cubing-icon event-444bf"></span>
-						  <span>4x4x4 Blind</span>
-						 </li>
-						 <li id="event-555" onclick="switchScrambler('5x5');">
-						  <span class="cubing-icon event-555"></span>
-						  <span>5x5x5</span>
-						 </li>
-						 <li id="event-555bf" onclick="switchScrambler('5x5bld');">
-						  <span class="cubing-icon event-555bf"></span>
-						  <span>5x5x5 Blind</span>
-						 </li>
-						 <li id="event-666" onclick="switchScrambler('6x6');">
-						  <span class="cubing-icon event-666"></span>
-						  <span>6x6x6</span>
-						 </li>
-						 <li id="event-777" onclick="switchScrambler('7x7');">
-						  <span class="cubing-icon event-777"></span>
-						  <span>7x7x7</span>
-						 </li>
-						 <li id="event-clock" onclick="switchScrambler('clock');">
-						  <span class="cubing-icon event-clock"></span>
-						  <span>Clock</span>
-						 </li>
-						 <li id="event-minx" onclick="switchScrambler('mega');">
-						  <span class="cubing-icon event-minx"></span>
-						  <span>Megaminx</span>
-						 </li>
-						 <li id="event-pyram" onclick="switchScrambler('pyra');">
-						  <span class="cubing-icon event-pyram"></span>
-						  <span title="Random State Pyraminx">Pyraminx</span>
-						 </li>
-						  <li id="event-sq1" onclick="switchScrambler('square-1');">
-						  <span class="cubing-icon event-sq1"></span>
-						  <span>Square-1</span>
-						 </li>
-						 <li id="event-skewb" onclick="switchScrambler('skewb');">
-						  <span class="cubing-icon event-skewb"></span>
-						  <span>Skewb</span>
-						 </li>
-						</ul>
-					</div>
-				</div>
-				<div id="scrambler2" class="tab-pane fade">
-					<h3>Special NxNxN</h3>
-					<div class="icons">
-					<div class="row">
-						<div class="col-md-4" onclick="switchScrambler('1x1');">1x1x1</div>
-						<div class="col-md-4" onclick="switchScrambler('2x2opt');">2x2x2 kurz</div>
-						<div class="col-md-4" onclick="switchScrambler('4x4sh');">4x4x4 kurz</div>
-						<div class="col-md-4" onclick="switchScrambler('5x5sh');">5x5x5 kurz</div>
-						<div class="col-md-4" onclick="switchScrambler('2x2bld');">2x2x2 blind</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3hco');" title="HCO=Half Center Orientation">3x3x3 HCO</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3ru');">3x3x3 &lt;RU&gt;</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3ruf');">3x3x3 &lt;RUF&gt;</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3rul');">3x3x3 &lt;RUL&gt;</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3lse');">3x3x3 LSE</div>
-						<div class="col-md-4" onclick="switchScrambler('void');">Void Cube</div>
-						<div class="col-md-4" onclick="switchScrambler('4x4sign');">4x4x4 SiGN</div>
-						<div class="col-md-4" onclick="switchScrambler('4x4rruu');">4x4x4 &lt;RrUu&gt;</div>
-						<div class="col-md-4" onclick="switchScrambler('5x5sign');">5x5x5 SiGN</div>
-					</div>
-					</div>
-					<h3>Cuboids</h3>
-					<div class="icons">
-					<div class="row">
-						<div class="col-md-4" onclick="switchScrambler('1x2x2');">1x2x2</div>
-						<div class="col-md-4" onclick="switchScrambler('2x2x1');">RandomState 2x2x1</div>
-						<div class="col-md-4" onclick="switchScrambler('1x2x3');">1x2x3</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3x2');">3x3x2</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3x4');">3x3x4</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3x5');">3x3x5</div>
-						<div class="col-md-4" onclick="switchScrambler('2x2x3');">2x2x3</div>
-					</div>
-					</div>
-					<h3>Shapemods</h3>
-					<div class="icons">
-					<div class="row">
-						<div class="col-md-4" onclick="switchScrambler('barrel');">Barrel Cube</div>
-						<div class="col-md-4" onclick="switchScrambler('ghost');">Ghost Cube</div>
-						<div class="col-md-4" onclick="switchScrambler('3x3co');">Fisher Cube</div>
-					</div>
-					</div>
-					<h3>Sonstige</h3>
-					<div class="icons">
-					<div class="row">
-						<div class="col-md-4" onclick="switchScrambler('heli');">Helicopter Cube</div>
-						<div class="col-md-4" onclick="switchScrambler('helij');">Jumbled Helicopter Cube</div>
-						<div class="col-md-4" onclick="switchScrambler('curvy');">Curvy Copter</div>
-						<div class="col-md-4" onclick="switchScrambler('curvyj');">Jumbled Curvy Copter</div>
-						<div class="col-md-4" onclick="switchScrambler('curvyp');">Curvy Copter Plus</div>
-						<div class="col-md-4" onclick="switchScrambler('curvypj');">Jumbled Curvy Copter Plus</div>
-						<div class="col-md-4" onclick="switchScrambler('curvypfj');">Fully Jumbled Curvy Copter Plus</div>
-						<div class="col-md-4" onclick="switchScrambler('mixup3x3');">Mixup 3x3</div>
-						<div class="col-md-4" onclick="switchScrambler('mixup4x4');">Mixup 4x4</div>
-						<div class="col-md-4" onclick="switchScrambler('mpyra');">Master Pyraminx</div>
-						<div class="col-md-4" onclick="switchScrambler('giga');">Gigaminx</div>
-						<div class="col-md-4" onclick="switchScrambler('pyracrystal');">Pyraminx Crystal</div>
-						<div class="col-md-4" onclick="switchScrambler('sq224');">Square 2x2x4</div>
-						<div class="col-md-4" onclick="switchScrambler('dreidellim');">Dreidel LimCube</div>
-						<div class="col-md-4" onclick="switchScrambler('square-2');">Square-2</div>
-						<div class="col-md-4" onclick="switchScrambler('gear');">Gear Cube</div>
-					</div>
-					</div>
-					<h3>Relays</h3>
-					<div class="icons">
-					<div class="row">
-						<div class="col-md-4" onclick="switchScrambler('relay');">Relays</div>
-						<li>Auswahl in Menü/Optionen/Sonstiges/Relays</div>
-					</div>
-					</div>
-				<div id="scrambler3" class="tab-pane fade">
-					<div class="btn btn-success btn-big" onclick="addCustomScrambler();">Add</div><br/>
-					<div id="customScrambler"></div>
-				</div>
-			</div>
 		<?php
 		include("options_en.html");
 		?>
