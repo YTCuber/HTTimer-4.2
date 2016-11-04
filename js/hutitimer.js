@@ -88,7 +88,8 @@ function buildArchitecture(){
 		relayWarn:true,
 		exportDesign:0,
 		displayGoalUnderTime:false,
-		displayTimeWhenSolving:true
+		displayTimeWhenSolving:true,
+		smallFontDecimalPoint:false
 	}
 }
 buildArchitecture();
@@ -107,6 +108,7 @@ function time(){
 	if(timer.running){
 		tmw=format((+new Date())-timer.zeit);
 		if(!timer.displayTimeWhenSolving)tmw="solving";
+		if(timer.smallFontDecimalPoint)tmw=tmw.split(".").join(".<small>")+"</small>";
 		$(".time, .time-unstyled").html(tmw);
 		setTimeout(time,timer.aktualisierungsrate);
 	}

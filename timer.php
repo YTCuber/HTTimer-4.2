@@ -49,9 +49,7 @@ You are not permitted to use any part of the code you are currently watching.
 	</head>
 	<body>
 		<div class="options" style="visibility:hidden;" id="optionen">
-			<div class="navbar-header">
-				<a class="navbar-brand" nohref="nohref">HT 4.2.0.259 Alpha</a>
-			</div>
+			<a class="navbar-brand" nohref="nohref">HT 4.2.0.260 Alpha</a><br/><br/><br/>
 			<?php
 			$login=isset($_COOKIE['HTTimer-login']);
 			if($login){
@@ -63,21 +61,15 @@ You are not permitted to use any part of the code you are currently watching.
 			<li><a nohref="nohref" class="scrambleop" onclick="show('scrambler')">Switch scrambler</a></li>
 			<li><a nohref="nohref" onclick="javascript:show('options');">Options</a></li>
 			<li><a nohref="nohref" onclick="javascript:show('hilfe');">Help</a></li>
-			<li role="separator" class="divider"></li>
 			<li><a nohref="nohref" onclick="javascript:ziel.display();">Goals</a></li>
 			<li><a nohref="nohref" onclick="javascript:show('musik');">Music</a></li>
 			<li><a nohref="nohref" onclick="javascript:takeabreak();">Take a break</a></li>
-			<li role="separator" class="divider"></li>
 			<li><a nohref="nohref" onclick="javascript:importCode();">Import</a></li>
 			<li><a nohref="nohref" onclick="javascript:exportCode();">Export</a></li>
 			<li><a nohref="nohref" onclick="javascript:generateExport();">Generate Export</a></li>
-			<li role="separator" class="divider"></li>
 			<li><a nohref="nohref" onclick="javascript:algsets.display();">AlgSets</a></li>
-			<li><a nohref="nohref" class="edit">Edit</a></li>
 			<li><a nohref="nohref" onclick="javascript:show('codeeditor');">Edit Code <span class="badge">ADVANCED</span></a></li>
 			<li><a nohref="nohref" onclick="javascript:show('hilfe');">Open Help</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="http://htsoftware.boards.net" target="_blank">Submit bug</a></li>
 			<div onclick="hide('optionen');">close Options</div>
 		</div>
 

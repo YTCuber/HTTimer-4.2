@@ -10,7 +10,7 @@
 		<div class="col-md-9"><textarea id="code-editor" style="width:100%;height:100%;box-sizing: border-box;"></textarea><button onclick="hide('codeeditor');codeeditor();" class="btn btn-default">Apply</button></div>
 		<div class="col-md-3">
 			<h4>Advanced Code Editor</h4>
-			<div class="alert alert-danger alert-dismissable" role="alert">Code at your own Risk. I am not responsible for data loss or computer crashes.</div>
+			<div class="alert alert-danger alert-dismissable" role="alert">Code at your own Risk. I am not responsible for anything, including data loss and computer crashes.</div>
 			Here you can write your own Layout and Style it using HTML and CSS (no JS). To insert a timer element, use the following table:<br>
 			<table class="table table-striped table-condensed">
 				<tr>
@@ -305,6 +305,9 @@
 		<button class="btn-option" onclick="timer.customAvg+=10;updateOptionsCustomAvg();">-10</button><br/>
 		<button class="btn-option" onclick="timer.customAvg+=100;updateOptionsCustomAvg();">+100</button><br/>
 		<button class="btn-option" onclick="timer.customAvg-=100;updateOptionsCustomAvg();">-100</button><br/>
+		<h3>Use small font after decimal point</h3>
+		<button class="btn-option" onclick="timer.smallFontDecimalPoint=true;">Enable</button><br/>
+		<button class="btn-option" onclick="timer.smallFontDecimalPoint=false;">Disable</button><br/>
 	</div>
 	<div class="optionBottomContainer" id="select5" style="visibility:hidden;max-height:99%;overflow:scroll;">
 		Nothing here!
