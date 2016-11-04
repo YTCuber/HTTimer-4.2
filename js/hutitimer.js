@@ -1,6 +1,6 @@
 ﻿window.modules.timer=true;
 
-var uwrs,colors,uwrholders,cube,remainingInspectionTime;
+var uwrs,colors,uwrholders,cube,remainingInspectionTime,digits,isUndefined;
 const SCRAMBLEIMAGE="scrambleImage";
 
 remainingInspectionTime=0;
@@ -18,6 +18,8 @@ colors["G"]="#FFFF00";
 colors["U"]="#FF00FF";
 colors["B"]="#0000FF";
 colors["A"]="#A0A0A0";
+isUndefined=function(x){return (function(a,undefined){return a==undefined;})(x)}
+digits=function f(a,b){return"\n_ |"[b%4&&b%2+-~a]||"ცᕦဨဢᒦႂႊᅦႪႦ".charCodeAt(a).toString(2).replace(/./g,f)}
 
 (function(){
 	var parts,s;
@@ -29,20 +31,6 @@ colors["A"]="#A0A0A0";
 		window.$_GET[unescape(parts[0])] = unescape(parts[1]);
 	}
 }());
-
-rotationReducer={
-	keys:[["x y x'","z"],["x' y x","z'"],["y x y'","z'"],["y x' y'","z"]],
-	reduce:function(rots){
-		var i;
-		rots=rots.toLowerCase();
-		for(i=0;i<rotationReducer.keys.length;++i){
-			if(rotationReducer.keys[i][0]==rots){
-				rots=rotationReducer.keys[i][1];
-			}
-		}
-		return rots;
-	}
-}
 
 Array.prototype.max = function() {
   return Math.max.apply(null, this);
@@ -59,9 +47,20 @@ String.prototype.replaceAll = function(search,replacement) {
 	var target = this;
 	return target.replace(new RegExp(search,'g'),replacement);
 };
-var isUndefined=function(x){return (function(a,undefined){return a==undefined;})(x)}
 
-var digits = function f(a,b){return"\n_ |"[b%4&&b%2+-~a]||"ცᕦဨဢᒦႂႊᅦႪႦ".charCodeAt(a).toString(2).replace(/./g,f)}
+rotationReducer={
+	keys:[["x y x'","z"],["x' y x","z'"],["y x y'","z'"],["y x' y'","z"]],
+	reduce:function(rots){
+		var i;
+		rots=rots.toLowerCase();
+		for(i=0;i<rotationReducer.keys.length;++i){
+			if(rotationReducer.keys[i][0]==rots){
+				rots=rotationReducer.keys[i][1];
+			}
+		}
+		return rots;
+	}
+}
 
 function buildArchitecture(){
 	window.timer=timer={
@@ -69,26 +68,26 @@ function buildArchitecture(){
 			results:[],
 			aktualisierungsrate:17
 		},
+		sessions:[],
 		running:false,
-		zeit:0,
 		scramble:"",
 		penalty:"",
 		type:"3x3",
-		timingMode:1,
-		blockTime:2e2,
-		blockTimeReturn:3e3,
-		sessions:[],
-		currentSession:0,
 		defaultScrambler:"3x3",
 		relayCommand:"2x2 2x2bld",
-		version:"2.1.7",
-		customAvg:100,
+		version:"4.2.1",
+		currentSession:0,
+		exportDesign:0,
 		tool:0,
+		zeit:0,
+		timingMode:1,
+		customAvg:100,
+		blockTime:2e2,
+		blockTimeReturn:3e3,
 		precision:true,
 		relayWarn:true,
-		exportDesign:0,
-		displayGoalUnderTime:false,
 		displayTimeWhenSolving:true,
+		displayGoalUnderTime:false,
 		smallFontDecimalPoint:false
 	}
 }
@@ -1139,16 +1138,18 @@ function codeeditor(){
 	$("#movable").html(code);
 	resizeStart();
 	init();
+	$(".vertical-line,.horizontal-line").hide();
 }
 
 function loadCode(timer){
 	var code;
-	if(timer=="qqtimer"){//Needs cleanup
-		code='<table border="1" cellpadding="5" cellspacing="0" width="100%"> <tbody><tr> <td colspan="3" id="menu" bgcolor="#00ff00"> <table cellpadding="2" cellspacing="0" width="100%"> <tbody><tr> <td> <font face="Arial" size="3">Scramble type:</font> <select id="optbox" size="1" onchange="rescramble(true);"><option onclick="show(\'scrambler\');">Select scrambler</option></select> </td><td> <font face="Arial" size="3">Scramble length:</font> <input value="25" id="leng" size="3" maxlength="3" onchange="rescramble3();"> </td><td><font face="Arial" size="3">Session:</font> <select id="sessbox" size="1" onchange="getSession(); loadList(); getStats(true);"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option></select> <td><a href="http://mzrg.com/qqtimer/megadoc.html" target="_blank" style="color: black;" class="a">Help!</a></td></tr></tbody></table> </td></tr><tr> <td colspan="3"> <span id="scramble" style="font-size: 16px;">SCRAMBLE</span><span id="getlast" onclick="getlastscramble()" class="a">NEXT</span> <span id="debug"></span> </td></tr><tr> <td align="center"> <span id="showOpt" onclick="toggleOptions()" class="a">show</span> timer options<br><span id="theTime" style="font-family: sans-serif; font-weight: bold; font-size: 2em; ">TIME</span><br>that time was: <span onclick="changeNotes(0);" class="a">no penalty</span> <span onclick="changeNotes(2);" class="a">+2</span> <span onclick="changeNotes(1);" class="a">DNF</span> | <span onclick="comment();" class="a">leave comment</span> </td><td style="width: 15em;"> <div id="theList" style="overflow-y: scroll; height: 16em;">TIMES</div></td><td style="width: 15em;"> <div id="stats" style="overflow-y: scroll; height: 16em;">SESSIONAVG</div></td></tr><tr id="options" style="display: none;"><td colspan="3"> <table width="100%"><tbody><tr><td align="left"> timer updating is <span id="toggler" onclick="toggleTimer()" class="a">on</span><br>timer precision is <span id="millisec" onclick="toggleMilli()" class="a">1/100 sec</span><br>bld mode is <span id="bldmode" onclick="toggleBld()" class="a">off</span><br>entering in times with <span id="inputTimes" onclick="toggleInput()" class="a">timer</span><br><span onclick="increaseSize()" class="a">increase</span>/<span onclick="decreaseSize()" class="a">decrease</span> timer size<br><span onclick="increaseScrambleSize()" class="a">increase</span>/<span onclick="decreaseScrambleSize()" class="a">decrease</span> scramble size<br>using <span id="inspec" onclick="toggleInspection()" class="a">no</span> inspection<br><span id="avgn" onclick="toggleAvgN()" class="a">not using</span> average of <input id="avglen" value="50" size="4" maxlength="4" onchange="changeAvgN()">&nbsp;<br><span id="mon" onclick="toggleMoN()" class="a">not using</span> mean of <input id="molen" value="3" size="4" maxlength="4" onchange="changeMoN()">&nbsp;<br>style: <span onclick="setCookie(&#39;style&#39;,0);window.location.reload();" class="a">Gottlieb</span> | <span onclick="setCookie(&#39;style&#39;,1);window.location.reload();" class="a">Tamanas</span> </td><td align="right"> > * monospace scrambles are <span id="monospace" onclick="toggleMono()" class="a">off</span><br>top bar color: #<input id="tcol" value="00ff00" size="6" maxlength="6" onchange="changeColor()"><br>background color: #<input id="bcol" value="white" size="6" maxlength="6" onchange="changeColor()"><br>text color: #<input id="fcol" value="black" size="6" maxlength="6" onchange="changeColor()"><br>link color: #<input id="lcol" value="blue" size="6" maxlength="6" onchange="changeColor()"><br>highlight color: #<input id="hcol" value="yellow" size="6" maxlength="6" onchange="changeColor()"><br>memorization colour: #<input id="memcol" value="green" size="6" maxlength="6" onchange="changeColor()"><br><span class="a" onclick="resetColors()">reset</span> colors to default<br><span class="a" onclick="toggleNightMode()">toggle</span> night mode<br></td></tr></tbody></table> </td></tr><tr id="avgdata" style="display: none; "> </tr><tr id="import" style="display: none;"> <td style="border: medium none ;"> <textarea cols="50" rows="10" id="importedTimes"></textarea> <div onclick="importCode();" class="a">import</div></td></tr></tbody></table> </div><div id="footer">&nbsp;</div><style>#movable{color:black !important;}';
+	if(timer=="qqtimer"){
+		code='<table border="1" cellpadding="5" cellspacing="0" width="100%"> <tbody><tr> <td colspan="3" id="menu" bgcolor="#00ff00"> <table cellpadding="2" cellspacing="0" width="100%"> <tbody><tr> <td> <font face="Arial" size="3">Scramble type:</font> <select id="optbox" size="1" onchange="rescramble(true);"><option onclick="show(\'scrambler\');">Select scrambler</option></select> </td><td> <font face="Arial" size="3">Scramble length:</font> <input value="25" id="leng" size="3" maxlength="3" onchange="rescramble3();"> </td><td><font face="Arial" size="3">Session:</font> <select id="sessbox" size="1" onchange="getSession(); loadList(); getStats(true);"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option></select> <td><a href="http://mzrg.com/qqtimer/megadoc.html" target="_blank" style="color: black;" class="a">Help!</a></td></tr></tbody></table> </td></tr><tr> <td colspan="3"> <span id="scramble" style="font-size: 16px;">SCRAMBLE</span><span id="getlast" onclick="getlastscramble()" class="a">NEXT</span> <span id="debug"></span> </td></tr><tr> <td align="center"> <span id="showOpt" onclick="show(\'optionen\')" class="a">show</span> timer options<br><span id="theTime" style="font-family: sans-serif; font-weight: bold; font-size: 2em; ">TIME</span><br>that time was: <span onclick="changeNotes(0);" class="a">no penalty</span> <span onclick="changeNotes(2);" class="a">+2</span> <span onclick="changeNotes(1);" class="a">DNF</span> | <span onclick="comment();" class="a">leave comment</span> </td><td style="width: 15em;"> <div id="theList" style="overflow-y: scroll; height: 16em;">TIMES</div></td><td style="width: 15em;"> <div id="stats" style="overflow-y: scroll; height: 16em;">SESSIONAVG</div></td></tr><div id="footer">&nbsp;</div>';
 		$("#code-editor").val(code);
 	}else if(timer=="httimer"){
-		code='<div class="scramble"></div><div class="next">Next &gt;</div><div class="times"><table class="table table-striped table-condensed table-hover"><tbody><tr><td colspan="3">Solve Times</td></tr><tr><td>1.:</td><td>Your first time</td><td><select><option>OK</option><option>+2</option><option>+4</option><option>DNF</option><option>Delete</option></select></td></tr></tbody></table></div><div class="sessions"><div class="sessionlist"></div><div class="sessionavg"></div></div><div class="time">0.000</div><div class="goal-time" style="visibility:hidden">Goal Time</div><div class="scrambleimg">Scramble image not available.</div>';
+		code='<div class="menulogo" onclick="show(\'optionen\');">&#9776;</div><div class="scramble"></div><div class="next">Next &gt;</div><div class="times"><table class="table table-striped table-condensed table-hover"><tbody><tr><td colspan="3">Solve Times</td></tr><tr><td>1.:</td><td>Your first time</td><td><select><option>OK</option><option>+2</option><option>+4</option><option>DNF</option><option>Delete</option></select></td></tr></tbody></table></div><div class="sessions"><div class="sessionavg"></div></div><div class="sessionlist"></div><div class="time" onclick="var a=prompt(\'Set time\');if(a){timer.zeit=Math.floor(+new Date()-a-80);stop();}">0.000</div><div class="goal-time" style="visibility:hidden">Goal Time</div><div class="scrambleimg">Scramble image not available.</div><div class="vertical-line">&nbsp;</div><div class="horizontal-line">&nbsp;</div>';
 		$("#code-editor").val(code);
+		$(".horizontal-line,.vertical-line").show();
 	}else if(timer=="ppt"){
 		code='<style>.time-unstyled{position:absolute;left:0;right:0;text-align:center;top:40%;color:black;font-size:10em;}#times,#statistics,#scrambleI{width:33%;position:absolute;bottom:0;border-top:1px solid grey;border-left:1px solid grey;height:25%;}.scramble-unstyled{text-align:center;position:absolute;left:0;right:0;top:80px;font-size:18pt;}#times{left:0;}#statistics{left:33.3%;}#scrambleI{left:66.6%;}#hand-left{position:absolute;left:50px;top:35%;}#hand-right{position:absolute;top:35%;right:50px;}</style>TIMESCRAMBLE<div id="times">TIMES</div><div id="statistics">SESSIONAVG</div><div id="scrambleI">ScrambleImage goes here</div><img src="https://lh4.ggpht.com/WDeNuUqNfaI5w2GxL2JaMpVJcdZRLA2hPadVbP_d8p4Cwh8qXUveEvVQC9HAVq30zmvS=w300" width="255" id="hand-left"/><img src="https://lh4.ggpht.com/WDeNuUqNfaI5w2GxL2JaMpVJcdZRLA2hPadVbP_d8p4Cwh8qXUveEvVQC9HAVq30zmvS=w300" width="255" id="hand-right"/>';
 		$("#code-editor").val(code);
