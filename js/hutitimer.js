@@ -1021,47 +1021,13 @@ function displayRelayOption(){
 
 function generateRelayCode(){
 	var i,j;
+	
 	timer.relayCommand="";
 	for(i=0;i<relayNumbers.length;++i){
 		if(relayNumbers[i]>0){
 			for(j=0;j<relayNumbers[i];++j){
 				timer.relayCommand+=timer.scrambleTypes[i]+" ";
 			}
-		}
-	}
-}
-
-/* importCstimer
- * function currently not working
- */
-function importCstimer(code){
-	timer={
-		running:false,
-		zeit:0,
-		penalty:'',
-		type:"",
-		timingMode:1,
-		blockTime:1e3,
-		blockTimeReturn:3000,
-		currentSession:0,
-		relayCommand:'2x2 2x2bld',
-		version:'2.1.7',
-		customAvg:3,
-		relayWarn:true,
-		sessions:[],
-		config:{
-			aktualisierungsrate:17,
-			results:[]
-		}
-	};
-	eval("cstimer="+code);
-	eval("csproperties="+cstimer.properties);
-	timer.type=csproperties.scrType;
-	for(var i=1;i<csproperties.sessionN;++i){
-		timer.sessions[i]={"scrambler":csproperties.scrType,"results":[]};
-		for(var j=0,obj;j<eval("cstimer.session"+i).length;++i){
-			obj={"zeit":eval("cstimer.session"+i)[j][0][1],"scramble":eval("cstimer.session"+i)[j][1],"penalty":'',"datum":0}
-			timer.sessions[i].results.push(obj);
 		}
 	}
 }
@@ -1074,6 +1040,7 @@ musik={
 			type=false;
 			src3=src.split(".");
 			src2=src3[src3.length-1];
+			
 			switch(src2){
 				case "mp3":
 				type="audio/mpeg";
@@ -1097,17 +1064,20 @@ musik={
 		load:function(){
 			var id;
 			id=prompt("Youtubevideoid hier eingeben:");
+			
 			musik.youtube.idlist.push(id);
 			musik.youtube.display();	
 		},
 		loadlist:function(){
 			var id,list;
-			id=prompt("Youtubevideoid hier eingeben:");
+			id=prompt("Youtubevideoid hier eingeben:"),
 			list=prompt("Youtubevideolistenid hier eingeben:");
+			
 			document.getElementById("musik2").innerHTML+='<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+id+'?autoplay=1&fs=0&disablekb=1&loop=1&autohide=0&list='+list+'" frameborder="0"/>';
 		},
 		display:function(){
 			var i;
+			
 			for(i=0;i<musik.youtube.idlist.length;++i){
 				document.getElementById("youtubeonevideoload").innerHTML+='<iframe id="ytplayer" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+musik.youtube.idlist[i]+'?autoplay=1&fs=0&disablekb=1&loop=1&autohide=0" frameborder="0"/>';
 			}
@@ -1117,12 +1087,12 @@ musik={
 
 function takeabreak(){
 	var time;
-	time=prompt("How long? (milliseconds)",60000);
+	time=prompt("How long? (seconds)",60)*1000;
 	
 	if(time>500){
 		show('takeabreak');
 		setTimeout("hide('takeabreak');",time);
-		document.getElementById("takeabreak").innerHTML="<h1>Taking a break right now!</h1>"+BR+"For "+time+" seconds.";
+		document.getElementById("takeabreak").innerHTML="<h1>Taking a break right now!</h1>"+BR+"For "+(time/1000)+" seconds.";
 	}
 }
 
