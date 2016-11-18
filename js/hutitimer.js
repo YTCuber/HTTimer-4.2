@@ -134,7 +134,7 @@ function stop(){
 	result={
 		zeit:zeit-80,
 		//scramble:document.getElementById(SCRAMBLE).innerHTML.split("<")[0],
-		penalty:timer.penalty,
+		penalty:"",
 		datum:+new Date(),
 		kommentar:""
 	};
@@ -156,7 +156,7 @@ function stop(){
 		}
 		document.getElementsByClassName("goal-time")[0].innerHTML="<h4>Current Goals:</h4>Single:"+ziel.format(ziel.ziele[timer.currentSession][0],best)+BR+"Ao5:"+ziel.format(ziel.ziele[timer.currentSession][1],bestao5)+BR+"Ao12:"+ziel.format(ziel.ziele[timer.currentSession][2],besto12);
 	}
-	timer.zeit=timer.scramble=timer.penalty=0;
+	timer.zeit=timer.scramble=0;
 	displayTimes();
 	drawTool();
 	displayScramble();

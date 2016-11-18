@@ -13,17 +13,18 @@ You are not permitted to use any part of the code you are currently watching.
 		<!--<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" media="all"    />-->
 		<script src="js/mathlib.js"></script>
 		<script src="js/jquery.min.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/metronome.js"></script>
 		<script src="js/interact.js"></script>
 		<script src="js/mousetrap.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+		<!--<script>window.modules={};</script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>-->
 		<script>window.modules={};window.TNOODLE_ENV={"TNOODLE_333_MIN_DISTANCE":"4"};</script>
 		<script src="js/tnoodle.js"></script>
 		<script>function puzzlesLoaded(puzzles){window.puzzles=puzzles;window.addEventListener("load",function(){/*tnoodlejs.getVersion()*/tnoodlejs.setLogLevel("FINEST");init()})}function newScramble(puzzle){var scram=puzzle.generateScramble();var maxWidth=0,maxHeight=0,svgText=tnoodlejs.scrambleToSvg(scram,puzzle,maxWidth,maxHeight);return scram}//newScramble(puzzles["222"]);</script>
 		<script src="js/cube.js"></script>
-		<script type="text/javascript" src="http://www.qqtimer.net/scramble_333_edit.js"></script>
+		<script src="js/scramble_333_edit.js"></script>
 		<script src="js/hutiscrambler.js"></script>
 		<script src="js/squanPyraScrambler.js"></script>
 		<script src="js/language.js"></script>
@@ -32,7 +33,7 @@ You are not permitted to use any part of the code you are currently watching.
 		<script src="js/hutitimer.js"></script>
 		<meta name="viewport"           content="width=device-width,initial-scale=1.0"/>
 		<meta name="description"        content="HTTimer:the best cubing timer!"      />
-		<meta name="keywords"           content="httimer,timer,cube timer,rubiks timer,multi stage timer,multistage timer,rubik's timer,rubik's cube timer,rubiks cube timer,rubix cube timer,javascript timer,rubiks,rubix,multi-stage,multistage, multi-step,multistep,breakdown, breakdowns"/>
+		<meta name="keywords"           content="httimer,timer,cube timer,rubiks timer,multi stage timer,multistage timer,rubik's timer,rubik's cube timer,rubiks cube timer,rubix cube timer,javascript timer,rubiks,rubix,multi-stage,multistage,multistep,music,rubixs"/>
 		<meta name="resource-type"      content="document"                            />
 		<meta name="language"           content="English"                             />
 		<meta name="rating"             content="general"                             />
@@ -49,27 +50,29 @@ You are not permitted to use any part of the code you are currently watching.
 	</head>
 	<body>
 		<div class="options" style="visibility:hidden;" id="optionen">
-			<a class="navbar-brand" nohref="nohref">HT 4.2.0.260 Alpha</a><br/><br/><br/>
-			<?php
-			$login=isset($_COOKIE['HTTimer-login']);
-			if($login){
-				echo "<li><a nohref='nohref'>Logged in as <b>".$_COOKIE['HTTimer-login']."</b></a></li>";
-			}else{
-			?>
-			<li><a href="../login.php" target="_blank">Login</a></li>
-			<?php } ?>
-			<li><a nohref="nohref" class="scrambleop" onclick="show('scrambler')">Switch scrambler</a></li>
-			<li><a nohref="nohref" onclick="javascript:show('options');">Options</a></li>
-			<li><a nohref="nohref" onclick="javascript:show('hilfe');">Help</a></li>
-			<li><a nohref="nohref" onclick="javascript:ziel.display();">Goals</a></li>
-			<li><a nohref="nohref" onclick="javascript:show('musik');">Music</a></li>
-			<li><a nohref="nohref" onclick="javascript:takeabreak();">Take a break</a></li>
-			<li><a nohref="nohref" onclick="javascript:importCode();">Import</a></li>
-			<li><a nohref="nohref" onclick="javascript:exportCode();">Export</a></li>
-			<li><a nohref="nohref" onclick="javascript:generateExport();">Generate Export</a></li>
-			<li><a nohref="nohref" onclick="javascript:algsets.display();">AlgSets</a></li>
-			<li><a nohref="nohref" onclick="javascript:show('codeeditor');">Edit Code <span class="badge">ADVANCED</span></a></li>
-			<li><a nohref="nohref" onclick="javascript:show('hilfe');">Open Help</a></li>
+			<a class="navbar-brand" nohref="nohref">HT 4.2.0.261 Alpha</a><br/><br/><br/>
+			<ul class="list-group">
+				<?php
+				$login=isset($_COOKIE['HTTimer-login']);
+				if($login){
+					echo "<li class='list-group-item'><a nohref='nohref'>Logged in as <b>".$_COOKIE['HTTimer-login']."</b></a></li>";
+				}else{
+				?>
+				<li class="list-group-item"><a href="../login.php" target="_blank">Login</a></li>
+				<?php } ?>
+				<li class="list-group-item"><a nohref="nohref" class="scrambleop" onclick="show('scrambler')">Switch scrambler</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:show('options');">Options</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:show('hilfe');">Help</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:ziel.display();">Goals</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:show('musik');">Music</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:takeabreak();">Take a break</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:importCode();">Import</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:exportCode();">Export</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:generateExport();">Generate Export</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:algsets.display();">AlgSets</a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:show('codeeditor');">Edit Code <span class="badge">ADVANCED</span></a></li>
+				<li class="list-group-item"><a nohref="nohref" onclick="javascript:show('hilfe');">Open Help</a></li>
+			</ul>
 			<div onclick="hide('optionen');">close Options</div>
 		</div>
 
